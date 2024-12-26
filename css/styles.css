@@ -19,6 +19,83 @@
 :root {
     --helve-bd: "Helvetica Bold";
     --helve-lt: "Helvetica Light";
-    --b: #000;
-    --w: #fff;
+    --b: #1d1d1b;
+    --w: #f1f2f1;
+}
+
+
+body {
+    background-color: var(--b);
+}
+img {
+    width: 100%;
+}
+
+/* MENÜ */
+#menu {
+    display: flex;
+    padding: 1rem 1.5rem;
+    position: fixed;
+    width: 100%;
+}
+#logo img {
+    width: 85%;
+    filter: invert(1);
+}
+#lychg {
+    display: flex;
+    justify-content: space-around;
+}
+#corner {
+    display: flex;
+}
+#menu span, #menu div {
+    font-family: var(--helve-bd);
+    color: var(--w);
+}
+#life {
+    text-align: end;
+    width: 50%;
+}
+#us {
+    text-align: end;
+    width: 50%;
+}
+
+
+/* INFO IMÁGENES */
+#info-imgs {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#info-imgs .line {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+}
+.line div {
+    font-family: var(--helve-bd);
+    color: var(--w);
+}
+
+
+/* LAYOUT 1 */
+#layout1 {
+    padding-top: 3rem;
+}
+#layout1 > div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3rem;
+    padding: 1.3rem;
+}
+.ly1col {
+    position: relative; 
+    will-change: transform;
 }
