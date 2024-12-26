@@ -27,11 +27,16 @@
 body {
     background-color: var(--b);
 }
+img {
+    width: 100%;
+}
 
 /* MENÜ */
 #menu {
     display: flex;
     padding: 1rem 1.5rem;
+    position: fixed;
+    width: 100%;
 }
 #logo img {
     width: 85%;
@@ -63,7 +68,8 @@ body {
     display: flex;
     width: 100%;
     flex-direction: column;
-    position: absolute;
+    position: fixed;
+    z-index: 10;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -76,4 +82,20 @@ body {
 .line div {
     font-family: var(--helve-bd);
     color: var(--w);
+}
+
+
+/* LAYOUT 1 */
+#layout1 {
+    padding-top: 3rem;
+}
+#layout1 > div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3rem;
+    padding: 1.3rem;
+}
+.ly1col {
+    position: relative; 
+    will-change: transform;
 }
