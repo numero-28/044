@@ -19,6 +19,40 @@
 :root {
     --helve-bd: "Helvetica Bold";
     --helve-lt: "Helvetica Light";
-    --b: #000;
-    --w: #fff;
+    --b: #1d1d1b;
+    --w: #f1f2f1;
+}
+
+
+body {
+    background-color: var(--b);
+}
+
+/* MENÜ */
+#menu {
+    display: flex;
+    padding: 1rem 1.5rem;
+}
+#logo img {
+    width: 85%;
+    filter: invert(1);
+}
+#lychg {
+    display: flex;
+    justify-content: space-around;
+}
+#corner {
+    display: flex;
+}
+#menu span, #menu div {
+    font-family: var(--helve-bd);
+    color: var(--w);
+}
+#life {
+    text-align: end;
+    width: 50%;
+}
+#us {
+    text-align: end;
+    width: 50%;
 }
