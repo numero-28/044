@@ -56,3 +56,24 @@ body {
     text-align: end;
     width: 50%;
 }
+
+
+/* INFO IMÁGENES */
+#info-imgs {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#info-imgs .line {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+}
+.line div {
+    font-family: var(--helve-bd);
+    color: var(--w);
+}
