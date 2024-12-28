@@ -73,6 +73,7 @@ img {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 #info-imgs .line {
     display: flex;
@@ -83,7 +84,9 @@ img {
     font-family: var(--helve-bd);
     color: var(--w);
 }
-
+#ly1, #ly2, #ly3 {
+    cursor: pointer;
+}
 
 /* LAYOUT 1 */
 #layout1 {
@@ -98,4 +101,20 @@ img {
 .ly1col {
     position: relative; 
     will-change: transform;
+}
+
+
+/* LAYOUT 2 */
+#layout2 {
+    width: 100vw;
+    height: 100vh;
+}
+#layout2 > div {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+#layout2 {
+    cursor: url(../media/next.png), auto;
 }
