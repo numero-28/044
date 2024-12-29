@@ -39,6 +39,7 @@ img {
     width: 100%;
     pointer-events: none;
     z-index: 20;
+    top: 0;
 }
 #logo img {
     width: 85%;
@@ -79,6 +80,7 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+    opacity: 0;
 }
 #info-imgs .line {
     display: flex;
@@ -118,6 +120,7 @@ img {
 #layout2 {
     width: 100vw;
     height: 100vh;
+    display: none;
 }
 #layout2 > div {
     height: 100vh;
@@ -130,4 +133,77 @@ img {
 }
 #ly2img {
     filter: brightness(0.7);
+}
+
+
+/* LAYOUT 3 */
+#layout3 {
+    display: none;
+}
+#ttimg {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    width: 20%;
+}
+#tatuadores {
+    position: relative;
+    width: 90vw;
+    height: 73vh;
+    overflow: hidden;
+    margin-top: 20vh;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-bottom: 7vh;
+}
+#tatuadores > div {
+    cursor: pointer;
+    z-index: 20;
+    position: absolute;
+    color: var(--w);
+    font-family: var(--helve-bd);
+}
+
+#tatuadores > div:first-child {
+    top: 4%;
+    left: 2%;
+}
+#tatuadores > div:nth-child(2) {
+    top: 19%;
+    left: 19%;
+}
+#tatuadores > div:nth-child(3) {
+    top: 0;
+    right: 28%;
+}
+#tatuadores > div:nth-child(4) {
+    top: 30%;
+    right: 10%;
+}
+#tatuadores > div:nth-child(5) {
+    top: 63%;
+    right: 34%;
+}
+#tatuadores > div:nth-child(6) {
+    top: 80%;
+    left: 8%;
+}
+#tatuadores > div:nth-child(7) {
+    top: 80%;
+    right: 40%;
+}
+#tatuadores > div:nth-child(8) {
+    top: 85%;
+    right: 0%;
+}
+#tatuadores > div:nth-child(9) {
+    bottom: 0;
+    right: 12%;
+}
+
+#ly3img {
+    filter: brightness(0.8);
 }

@@ -25,7 +25,8 @@ $(document).ready(function () {
     $('#ly1').click(function() {
         $('#layout1').show();
         $('#layout2').hide();
-        $('#layout3').hide();
+        $('#layout3').hide();  
+        $('#info-imgs').css('opacity','0');  
     })
     // crear imagenes en las columnas para meter todas
 
@@ -95,11 +96,21 @@ $(document).ready(function () {
     });
 
 
+    $('#layout1 .ly1col img').on('mouseenter', function() {
+        $('#info-imgs').css('opacity', '1'); 
+    });
+    $('#layout1 .ly1col img').on('mouseleave', function() {
+        $('#info-imgs').css('opacity', '0');
+    });
+
+
+
     // LAYOUT 2
     $('#ly2').click(function() {
         $('#layout2').show();
         $('#layout1').hide();
         $('#layout3').hide();
+        $('#info-imgs').css('opacity', '1');  
     })
 
     let currentIndex = 0;
@@ -122,7 +133,7 @@ $(document).ready(function () {
         do {
             newOrder.sort(() => Math.random() - 0.5);
         } while (newOrder.some((div, index) => div === infodivs[index]));
-        
+
         newOrder.forEach(div => $(div).parent().append(div));
         $(this).attr('src', imagenesRandom[currentIndex]);
     });
@@ -140,5 +151,35 @@ $(document).ready(function () {
         }
     });
 
+
+
+    // LAYOUT 3
+    $('#ly3').click(function() {
+        $('#layout3').show();
+        $('#layout1').hide();
+        $('#layout2').hide();
+        $('#info-imgs').css('opacity', '0');  
+    })
+
+    const numImagenes = 10;
+    const indices = tatuadores.reduce((acc, tatuador) => {
+        acc[tatuador] = 0;
+        return acc;
+    }, {});
+
+    $('.tatuador').hover(
+        function () {
+            currentTatuador = $(this).data('tat');
+            const index = indices[currentTatuador];
+            const imagen = `${rutaBase}${currentTatuador}/imagen${index + 1}.jpg`; 
+            $('#ly3img').attr('src', imagen).show();
+        },
+        function () {
+            const index = indices[currentTatuador];
+            indices[currentTatuador] = (index + 1) % numImagenes; 
+            $('#ly3img').hide(); 
+        }
+    );
+    
 
 });
