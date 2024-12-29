@@ -108,9 +108,9 @@ $(document).ready(function () {
         const imageWidth = $(this).width();
         const clickPosition = e.pageX - $(this).offset().left;
 
-        if (clickPosition < imageWidth / 2) {
+         if (clickPosition < imageWidth * 0.3) {
             currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
-        } else {
+        } else if (clickPosition > imageWidth * 0.7) {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
         }
 
@@ -119,9 +119,12 @@ $(document).ready(function () {
 
     $(document).mousemove(function(event) {
         var anchoPantalla = $(window).width();
+        var posicionX = event.pageX;
 
-        if (event.pageX < anchoPantalla / 2) {
+        if (posicionX < anchoPantalla * 0.3) {
             $('#layout2').css('cursor', 'url(media/prev.png), auto');
+        } else if (posicionX >= anchoPantalla * 0.3 && posicionX <= anchoPantalla * 0.7) {
+            $('#layout2').css('cursor', 'url(media/ink.png), auto');
         } else {
             $('#layout2').css('cursor', 'url(media/next.png), auto');
         }

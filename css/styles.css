@@ -37,6 +37,8 @@ img {
     padding: 1rem 1.5rem;
     position: fixed;
     width: 100%;
+    pointer-events: none;
+    z-index: 20;
 }
 #logo img {
     width: 85%;
@@ -48,6 +50,9 @@ img {
 }
 #corner {
     display: flex;
+    pointer-events: all;
+    cursor: pointer;
+    height: fit-content;
 }
 #menu span, #menu div {
     font-family: var(--helve-bd);
@@ -86,6 +91,8 @@ img {
 }
 #ly1, #ly2, #ly3 {
     cursor: pointer;
+    pointer-events: all;
+    height: fit-content;
 }
 
 /* LAYOUT 1 */
@@ -102,6 +109,9 @@ img {
     position: relative; 
     will-change: transform;
 }
+#layout1 .ly1col img {
+    filter: brightness(0.7);
+}
 
 
 /* LAYOUT 2 */
@@ -117,4 +127,7 @@ img {
 }
 #layout2 {
     cursor: url(../media/next.png), auto;
+}
+#ly2img {
+    filter: brightness(0.7);
 }
