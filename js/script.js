@@ -55,6 +55,8 @@ $(document).ready(function () {
         imgsEsteDiv.forEach(imagen => {
             const imgElement = document.createElement('img');
             imgElement.src = imagen;
+            const subcarpeta = imagen.split('/')[2]; 
+            imgElement.setAttribute('data-tat', subcarpeta);
 
             // Márgenes aleatorios entre 10 y 26 rem
             const margenRandom = 10 + Math.random() * 16; // Margen entre 10 y 26 rem
@@ -98,7 +100,17 @@ $(document).ready(function () {
 
     $('#layout1 .ly1col img').on('mouseenter', function() {
         $('#info-imgs').css('opacity', '1'); 
+        const subcarpeta = $(this).attr('data-tat');    
+        $('#infotat').text(subcarpeta);
+        
+        const infodivs = $('.infodivs').toArray();
+        const newOrder = [...infodivs];
+        do {
+            newOrder.sort(() => Math.random() - 0.5);
+        } while (newOrder.some((div, index) => div === infodivs[index]));
+        newOrder.forEach(div => $(div).parent().append(div));
     });
+
     $('#layout1 .ly1col img').on('mouseleave', function() {
         $('#info-imgs').css('opacity', '0');
     });
@@ -111,16 +123,24 @@ $(document).ready(function () {
         $('#layout1').hide();
         $('#layout3').hide();
         $('#info-imgs').css('opacity', '1');  
+
+        $('#infotat').empty();
+        const subcarpeta = $('#ly2img').attr('data-tat');
+        $('#infotat').text(subcarpeta);
     })
 
     let currentIndex = 0;
     $('#ly2img').attr('src', imagenesRandom[currentIndex]);
+    $('#ly2img').attr('data-tat', imagenesRandom[currentIndex].split('/')[2]);
+    $('#infotat').text(imagenesRandom[currentIndex].split('/')[2]);
+
     $('#ly2img').on('click', function(e) {
         const imageWidth = $(this).width();
         const clickPosition = e.pageX - $(this).offset().left;
 
         const infodivs = $('.infodivs').toArray();
         const newOrder = [...infodivs];
+
         
         if (clickPosition < imageWidth * 0.3) {
             currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
@@ -133,9 +153,16 @@ $(document).ready(function () {
         do {
             newOrder.sort(() => Math.random() - 0.5);
         } while (newOrder.some((div, index) => div === infodivs[index]));
-
+        
         newOrder.forEach(div => $(div).parent().append(div));
-        $(this).attr('src', imagenesRandom[currentIndex]);
+        const nuevaImagen = imagenesRandom[currentIndex];
+        const subcarpeta = nuevaImagen.split('/')[2]; // Extraer el nombre de la subcarpeta
+
+        $(this).attr('src', nuevaImagen);
+        $(this).attr('data-tat', subcarpeta);
+
+        // Actualizar el texto en #infotat con el nombre de la subcarpeta
+        $('#infotat').text(subcarpeta);
     });
 
     $(document).mousemove(function(event) {

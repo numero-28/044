@@ -114,7 +114,9 @@ img {
 #layout1 .ly1col img {
     filter: brightness(0.7);
 }
-
+#infotat {
+    text-transform: uppercase;
+}
 
 /* LAYOUT 2 */
 #layout2 {
