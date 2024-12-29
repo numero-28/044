@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // arrays tatuadores y array de todo
-    const tatuadores = ["acid", "alex.aramburu", "elvira", "galgo", "infrababy", "nando", "nona", "santa.gemz", "zepa"];
+    const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
     const rutaBase = "./media/";
 
     const arraysTatuadores = tatuadores.map(tatuador => {
@@ -44,59 +44,69 @@ $(document).ready(function () {
         return Math.ceil(imgsPorDiv * (1 / velocidad)); // Menos imágenes para las columnas lentas
     }
 
-    // Distribuir imágenes y asignarles márgenes aleatorios
     ly1col.forEach((div, index) => {
-        const velocidad = (div.classList.contains('fast')) ? 1.6 : 
-                        (div.classList.contains('mid')) ? 1.3 : 1; // Ajustamos la velocidad según la clase
-
-        const numImágenesColumna = calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv);
-        const imgsEsteDiv = imagenesRandom.slice(index * imgsPorDiv, index * imgsPorDiv + numImágenesColumna);
-
-        // Añadir imágenes con márgenes aleatorios
-        imgsEsteDiv.forEach(imagen => {
+        const velocidad = (div.classList.contains('fast')) ? 1.6 :
+                          (div.classList.contains('mid')) ? 1.3 : 1; // Ajustamos la velocidad según la clase
+    
+        const imgsEsteDiv = imagenesRandom.slice(index * imgsPorDiv, (index + 1) * imgsPorDiv);
+    
+        imgsEsteDiv.forEach((imagen, imgIndex) => {
             const imgElement = document.createElement('img');
             imgElement.src = imagen;
-            const subcarpeta = imagen.split('/')[2]; 
+    
+            // Extraemos la subcarpeta para el atributo `data-tat`
+            const subcarpeta = imagen.split('/')[2];
             imgElement.setAttribute('data-tat', subcarpeta);
-
-            // Márgenes aleatorios entre 10 y 26 rem
-            const margenRandom = 10 + Math.random() * 16; // Margen entre 10 y 26 rem
+    
+            // Márgenes dinámicos en función de la velocidad
+            const margenBase = 10; // Mínimo margen (en rem)
+            const margenVariable = 16 / velocidad; // Márgenes reducidos para columnas rápidas
+            const margenRandom = (imgIndex === 0) ? 0 : margenBase + Math.random() * margenVariable;
+    
             imgElement.style.marginBottom = `${margenRandom}rem`;
-
+    
             div.appendChild(imgElement);
         });
     });
 
-    // Crear animación parallax con GSAP
+
+    ly1col.forEach(columna => duplicarContenidoColumna(columna));
+
+
+    // Ajustar las animaciones GSAP para cada columna
     ly1col.forEach(columna => {
         let velocidad = 1;
 
-        // Determinar la velocidad según la clase
         if (columna.classList.contains('mid')) {
-            velocidad = 1.3; // Más lenta
+            velocidad = 1.3;
         } else if (columna.classList.contains('fast')) {
-            velocidad = 1.6; // Aún más lenta
-        } else {
-            velocidad = 1; // Rápida (por defecto)
+            velocidad = 1.6;
         }
 
-        // Configurar efecto parallax
+        const alturaColumna = columna.scrollHeight / 2; // Altura del conjunto original (sin duplicado)
+
+        // Crear el efecto de desplazamiento infinito
         gsap.to(columna, {
-            y: (index) => {
-            // Obtén la altura total de la columna
-            const alturaColumna = columna.scrollHeight;
-            // Calcular el desplazamiento basado en la velocidad y el tamaño de la columna
-            return alturaColumna * (1 - velocidad); // Este valor ajustará el desplazamiento según la velocidad
-        },
-            ease: "none", // Sin easing para un movimiento constante
+            y: () => -(alturaColumna * (velocidad - 1)), // Ajustar desplazamiento según la velocidad
+            ease: "none",
+            repeat: -1, // Loop infinito
             scrollTrigger: {
-                trigger: columna, // Elemento disparador
-                start: "top bottom", // Inicia cuando la parte superior de la columna entra en pantalla
-                end: "bottom top", // Termina cuando la parte inferior de la columna sale de pantalla
-                scrub: true, // Sincroniza el movimiento con el scroll
+                trigger: columna,
+                start: "top bottom",
+                end: `+=${alturaColumna}`, // Duración basada en la altura del conjunto original
+                scrub: true, // Sincronizar con el scroll
+                onUpdate: self => {
+                    // Reiniciar posición cuando el scroll llega al final
+                    if (self.progress === 1) {
+                        self.scroll(self.start); // Volver al inicio
+                    }
+                },
+                invalidateOnRefresh: true, // Recalcular al actualizar el contenido o cambiar el tamaño
             },
         });
     });
+
+        
 
 
     $('#layout1 .ly1col img').on('mouseenter', function() {

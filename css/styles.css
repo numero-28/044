@@ -108,11 +108,14 @@ img {
     padding: 1.3rem;
 }
 .ly1col {
-    position: relative; 
+    overflow: hidden; /* Ocultar cualquier contenido que salga del contenedor */
+    position: relative;
     will-change: transform;
 }
+
 #layout1 .ly1col img {
     filter: brightness(0.7);
+    margin: 0;
 }
 #infotat {
     text-transform: uppercase;
