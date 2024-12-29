@@ -21,6 +21,7 @@ $(document).ready(function () {
     const imagenesRandom = shuffle([...todas]);
 
 
+
     // PARA LAYOUT 1
     $('#ly1').click(function() {
         $('#layout1').show();
@@ -156,12 +157,11 @@ $(document).ready(function () {
         
         newOrder.forEach(div => $(div).parent().append(div));
         const nuevaImagen = imagenesRandom[currentIndex];
-        const subcarpeta = nuevaImagen.split('/')[2]; // Extraer el nombre de la subcarpeta
+        const subcarpeta = nuevaImagen.split('/')[2]; 
 
         $(this).attr('src', nuevaImagen);
         $(this).attr('data-tat', subcarpeta);
 
-        // Actualizar el texto en #infotat con el nombre de la subcarpeta
         $('#infotat').text(subcarpeta);
     });
 
