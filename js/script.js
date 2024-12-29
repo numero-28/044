@@ -108,12 +108,22 @@ $(document).ready(function () {
         const imageWidth = $(this).width();
         const clickPosition = e.pageX - $(this).offset().left;
 
-         if (clickPosition < imageWidth * 0.3) {
+        const infodivs = $('.infodivs').toArray();
+        const newOrder = [...infodivs];
+        
+        if (clickPosition < imageWidth * 0.3) {
             currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
         } else if (clickPosition > imageWidth * 0.7) {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
+        } else {
+            return;
         }
 
+        do {
+            newOrder.sort(() => Math.random() - 0.5);
+        } while (newOrder.some((div, index) => div === infodivs[index]));
+        
+        newOrder.forEach(div => $(div).parent().append(div));
         $(this).attr('src', imagenesRandom[currentIndex]);
     });
 
