@@ -1,132 +1,137 @@
 $(document).ready(function () {
-
-    // arrays tatuadores y array de todo
-    const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
-    const rutaBase = "./media/";
-
-    const arraysTatuadores = tatuadores.map(tatuador => {
+      // arrays tatuadores y array de todo
+      const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
+      const rutaBase = "./media/";
+  
+      const arraysTatuadores = tatuadores.map(tatuador => {
         const numImagenes = 10; 
         return Array.from({ length: numImagenes }, (_, i) => `${rutaBase}${tatuador}/imagen${i + 1}.jpg`);
     });
-
-    const todas = arraysTatuadores.flat();
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-    const imagenesRandom = shuffle([...todas]);
-
-
-
-    // PARA LAYOUT 1
-    $('#ly1').click(function() {
-        $('#layout1').show();
-        $('#layout2').hide();
-        $('#layout3').hide();  
-        $('#info-imgs').css('opacity','0');  
-    })
-    // crear imagenes en las columnas para meter todas
-
-
-
-    gsap.registerPlugin(ScrollTrigger);
-    // Distribuir imágenes en columnas con márgenes dinámicos
-    const ly1col = document.querySelectorAll('.ly1col');
-    const numDivs = ly1col.length;
-    const imgsPorDiv = Math.ceil(imagenesRandom.length / numDivs); // Distribuir las imágenes en columnas
-
-    // Calcular la cantidad de imágenes necesarias para cada columna basada en su velocidad
-    function calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv) {
-        return Math.ceil(imgsPorDiv * (1 / velocidad)); // Menos imágenes para las columnas lentas
-    }
-
-    ly1col.forEach((div, index) => {
-        const velocidad = (div.classList.contains('fast')) ? 1.6 :
-                          (div.classList.contains('mid')) ? 1.3 : 1; // Ajustamos la velocidad según la clase
     
-        const imgsEsteDiv = imagenesRandom.slice(index * imgsPorDiv, (index + 1) * imgsPorDiv);
+  
+      const todas = arraysTatuadores.flat();
+  
+      function shuffle(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+      }
+      const imagenesRandom = shuffle([...todas]);
+  
+  
+  
+      // PARA LAYOUT 1
+      $('#ly1').click(function() {
+          $('#layout1').show();
+          $('#layout2').hide();
+          $('#layout3').hide();  
+          $('#info-imgs').css('opacity','0');  
+      });
+  
+  
+  // -------
+      // Calcular la cantidad de imágenes necesarias para cada columna basada en su velocidad
+      function calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv) {
+          return Math.ceil(imgsPorDiv * (1 / velocidad)); // Menos imágenes para las columnas lentas
+      }
+  
+      // Selección de columnas y configuración inicial
+      const ly1col = document.querySelectorAll('.ly1col');
+      const numDivs = ly1col.length;
+      const imgsPorDiv = Math.ceil(imagenesRandom.length / numDivs); // Distribuir imágenes equitativamente
+  
+      // Distribuir imágenes en las columnas con márgenes dinámicos
+      ly1col.forEach((div, index) => {
+          const velocidad = div.classList.contains('fast') 
+              ? 1.6 
+              : div.classList.contains('mid') 
+              ? 1.3 
+              : 1; // Determinar velocidad según la clase
+          
+          const imgsEsteDiv = imagenesRandom.slice(index * imgsPorDiv, (index + 1) * imgsPorDiv);
+  
+          imgsEsteDiv.forEach((imagen, imgIndex) => {
+              const imgElement = document.createElement('img');
+              imgElement.src = imagen;
+  
+              // Extraer subcarpeta para el atributo data-tat
+              const subcarpeta = imagen.split('/')[2];
+              imgElement.setAttribute('data-tat', subcarpeta);
+  
+              // Configurar márgenes dinámicos en función de la velocidad
+              const margenBase = 8; // Mínimo margen (en rem)
+              const margenVariable = 16 / velocidad; // Márgenes reducidos para columnas rápidas
+              const margenRandom = imgIndex === 0 ? 0 : margenBase + Math.random() * margenVariable;
+  
+              imgElement.style.marginBottom = `${margenRandom}rem`;
+  
+              div.appendChild(imgElement); // Agregar imagen a la columna
+          });
+      });
+  
+      // Registrar GSAP ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
+  
+      // Función para duplicar contenido de las columnas
+      function duplicarContenidoColumna(columna) {
+          const contenidoOriginal = columna.innerHTML;
+          columna.innerHTML += contenidoOriginal; // Duplica el contenido para crear un bucle infinito
+      }
+  
+      // Duplicar contenido de cada columna
+      ly1col.forEach(columna => duplicarContenidoColumna(columna));
+  
+      // Animación GSAP para cada columna
+      ly1col.forEach(columna => {
+          let velocidad = 1;
+  
+          if (columna.classList.contains('mid')) {
+              velocidad = 1.3;
+          } else if (columna.classList.contains('fast')) {
+              velocidad = 1.6;
+          }
+  
+          const alturaColumna = columna.scrollHeight / 2; // Altura del conjunto original (antes de duplicar)
+  
+          // Crear desplazamiento infinito sincronizado con el scroll
+          gsap.to(columna, {
+              y: () => -(alturaColumna), // Desplazamiento hacia arriba
+              ease: "none",
+              scrollTrigger: {
+                  trigger: columna,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true, // Vincular desplazamiento con el scroll del usuario
+                  invalidateOnRefresh: true, // Recalcular en caso de cambios
+              },
+          });
+      });
+  
+  // --------        
+  
+  
+      $('#layout1 .ly1col img').on('mouseenter', function() {
+          $('#info-imgs').css('opacity', '1'); 
+          const subcarpeta = $(this).attr('data-tat');    
+          $('#infotat').text(subcarpeta);
+          
+          const infodivs = $('.infodivs').toArray();
+          const newOrder = [...infodivs];
+          do {
+              newOrder.sort(() => Math.random() - 0.5);
+          } while (newOrder.some((div, index) => div === infodivs[index]));
+          newOrder.forEach(div => $(div).parent().append(div));
+      });
+  
+      $('#layout1 .ly1col img').on('mouseleave', function() {
+          $('#info-imgs').css('opacity', '0');
+      });
+  
+  
+
     
-        imgsEsteDiv.forEach((imagen, imgIndex) => {
-            const imgElement = document.createElement('img');
-            imgElement.src = imagen;
-    
-            // Extraemos la subcarpeta para el atributo `data-tat`
-            const subcarpeta = imagen.split('/')[2];
-            imgElement.setAttribute('data-tat', subcarpeta);
-    
-            // Márgenes dinámicos en función de la velocidad
-            const margenBase = 10; // Mínimo margen (en rem)
-            const margenVariable = 16 / velocidad; // Márgenes reducidos para columnas rápidas
-            const margenRandom = (imgIndex === 0) ? 0 : margenBase + Math.random() * margenVariable;
-    
-            imgElement.style.marginBottom = `${margenRandom}rem`;
-    
-            div.appendChild(imgElement);
-        });
-    });
-
-
-    ly1col.forEach(columna => duplicarContenidoColumna(columna));
-
-
-    // Ajustar las animaciones GSAP para cada columna
-    ly1col.forEach(columna => {
-        let velocidad = 1;
-
-        if (columna.classList.contains('mid')) {
-            velocidad = 1.3;
-        } else if (columna.classList.contains('fast')) {
-            velocidad = 1.6;
-        }
-
-        const alturaColumna = columna.scrollHeight / 2; // Altura del conjunto original (sin duplicado)
-
-        // Crear el efecto de desplazamiento infinito
-        gsap.to(columna, {
-            y: () => -(alturaColumna * (velocidad - 1)), // Ajustar desplazamiento según la velocidad
-            ease: "none",
-            repeat: -1, // Loop infinito
-            scrollTrigger: {
-                trigger: columna,
-                start: "top bottom",
-                end: `+=${alturaColumna}`, // Duración basada en la altura del conjunto original
-                scrub: true, // Sincronizar con el scroll
-                onUpdate: self => {
-                    // Reiniciar posición cuando el scroll llega al final
-                    if (self.progress === 1) {
-                        self.scroll(self.start); // Volver al inicio
-                    }
-                },
-                invalidateOnRefresh: true, // Recalcular al actualizar el contenido o cambiar el tamaño
-            },
-        });
-    });
-
-        
-
-
-    $('#layout1 .ly1col img').on('mouseenter', function() {
-        $('#info-imgs').css('opacity', '1'); 
-        const subcarpeta = $(this).attr('data-tat');    
-        $('#infotat').text(subcarpeta);
-        
-        const infodivs = $('.infodivs').toArray();
-        const newOrder = [...infodivs];
-        do {
-            newOrder.sort(() => Math.random() - 0.5);
-        } while (newOrder.some((div, index) => div === infodivs[index]));
-        newOrder.forEach(div => $(div).parent().append(div));
-    });
-
-    $('#layout1 .ly1col img').on('mouseleave', function() {
-        $('#info-imgs').css('opacity', '0');
-    });
-
-
 
     // LAYOUT 2
     $('#ly2').click(function() {
