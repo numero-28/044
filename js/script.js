@@ -27,6 +27,7 @@ $(document).ready(function () {
         $('#layout1').show();
         $('#layout2').hide();
         $('#layout3').hide();  
+        $('#layout4').hide();  
         $('#info-imgs').css('opacity','0');  
     })
     // crear imagenes en las columnas para meter todas
@@ -123,6 +124,7 @@ $(document).ready(function () {
         $('#layout2').show();
         $('#layout1').hide();
         $('#layout3').hide();
+        $('#layout4').hide();  
         $('#info-imgs').css('opacity', '1');  
 
         $('#infotat').empty();
@@ -185,6 +187,7 @@ $(document).ready(function () {
         $('#layout3').show();
         $('#layout1').hide();
         $('#layout2').hide();
+        $('#layout4').hide();  
         $('#info-imgs').css('opacity', '0');  
     })
 
@@ -207,6 +210,55 @@ $(document).ready(function () {
             $('#ly3img').hide(); 
         }
     );
+
+
+    // LAYOUT 4 
+    $('#ly4').click(function() {
+        $('#layout4').show();  
+        $('#layout3').hide();
+        $('#layout1').hide();
+        $('#layout2').hide();
+        $('#info-imgs').css('opacity', '0');  
+    })
+    // GALERÍA 
+    $(function () {
+    const container = $('#phototatscroll'), bigPhoto = $('#phototat img');
+    const photos = $('#phototatscroll img');
+    container.append(photos.clone()).scrollTop(0);
+
+    container.on('scroll', function () {
+        const scrollTop = container.scrollTop(), photoHeight = photos.first().outerHeight();
+        const visibleIndex = Math.floor((scrollTop + container.height() / 2) / photoHeight) % photos.length;
+        bigPhoto.attr('src', photos.eq(visibleIndex).attr('src'));
+
+        if (scrollTop + container.height() >= container[0].scrollHeight) container.scrollTop(0);
+        else if (scrollTop <= 0) container.scrollTop(container[0].scrollHeight - container.height());
+    });
+    });
+
+    // MODAL 
+
+    const openModal = document.getElementById('openModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeModal = document.getElementById('closeModal');
+
+    // Abrir el modal
+    openModal.addEventListener('click', () => {
+    modalOverlay.style.display = 'flex'; // Mostrar el modal
+    });
+
+    // Cerrar el modal
+    closeModal.addEventListener('click', () => {
+    modalOverlay.style.display = 'none'; // Ocultar el modal
+    });
+
+    // Cerrar modal al hacer clic fuera de él
+    modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+        modalOverlay.style.display = 'none';
+    }
+    });
+
     
 
 });
