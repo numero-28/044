@@ -224,4 +224,14 @@ $(document).ready(function () {
     );
     
 
+    // US
+    $('#us-bt').click(function() {
+        $('#layout3').hide();
+        $('#layout1').hide();
+        $('#layout2').hide();
+        $('#us').show();
+        $('#info-imgs').css('opacity', '0');  
+    })
+
+
 });
