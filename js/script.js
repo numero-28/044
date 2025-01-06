@@ -205,10 +205,27 @@ $(document).ready(function () {
 
         let visibleImages = $("#center img").filter(function () {
             const rect = this.getBoundingClientRect();
-            return rect.top >= 0 && rect.bottom <= window.innerHeight;
+            return rect.bottom >= 0 && rect.top <= window.innerHeight;
         });
 
-        chosenimg = visibleImages.first(); 
+        chosenimg = visibleImages
+            .toArray()
+            .reduce((closest, img) => {
+                const rect = img.getBoundingClientRect();
+                const imgCenter = (rect.top + rect.bottom) / 2; 
+                const screenCenter = window.innerHeight / 2;  
+                const distanceToCenter = Math.abs(imgCenter - screenCenter);
+
+                if (!closest || distanceToCenter < closest.distance) {
+                    return { img, distance: distanceToCenter };
+                }
+                return closest;
+            }, null)?.img;
+
+        if (chosenimg) {
+            chosenimg = $(chosenimg); 
+        }
+
         let allImages = $(".ly1col img").not(chosenimg);
         let shuffledImages = allImages.toArray().sort(() => Math.random() - 0.5); 
         let groups = [];
@@ -313,11 +330,6 @@ $(document).ready(function () {
             $("#layout1").show();
 
             const ly2imgSrc = $("#ly2img").attr("src");
-             const indexToRemove = imagenesRandom.indexOf(ly2imgSrc);
-        if (indexToRemove !== -1) {
-            imagenesRandom.splice(indexToRemove, 1); // Eliminar la imagen del array
-        }   
-
             const centerDiv = $("#center");
             const newFirstImage = document.createElement("img");
             newFirstImage.src = ly2imgSrc;
@@ -325,7 +337,6 @@ $(document).ready(function () {
             newFirstImage.style.display = "block";
             newFirstImage.style.marginBottom = "18rem"; 
             centerDiv.prepend(newFirstImage);
-
 
             let allImages = $(".ly1col img").toArray();
             let shuffledImages = allImages.sort(() => Math.random() - 0.5);
