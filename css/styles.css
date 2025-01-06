@@ -23,7 +23,9 @@
     --w: #f1f2f1;
 }
 
-
+::-webkit-scrollbar {
+    display: none;
+}
 body {
     background-color: var(--b);
 }
@@ -80,6 +82,8 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+}
+.infodivs {
     opacity: 0;
 }
 #info-imgs .line {
@@ -106,6 +110,10 @@ img {
     flex-direction: column;
     row-gap: 3rem;
     padding: 1.3rem;
+}
+.row {
+    margin-right: 0;
+    margin-left: 0;
 }
 .ly1col {
     position: relative; 

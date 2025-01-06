@@ -27,7 +27,7 @@ $(document).ready(function () {
         $('#layout1').show();
         $('#layout2').hide();
         $('#layout3').hide();  
-        $('#info-imgs').css('opacity','0');  
+        $('.infodivs').css('opacity','0');  
     })
     // crear imagenes en las columnas para meter todas
 
@@ -100,7 +100,7 @@ $(document).ready(function () {
 
 
     $('#layout1 .ly1col img').on('mouseenter', function() {
-        $('#info-imgs').css('opacity', '1'); 
+        $('.infodivs').css('opacity', '1'); 
         const subcarpeta = $(this).attr('data-tat');    
         $('#infotat').text(subcarpeta);
         
@@ -113,27 +113,20 @@ $(document).ready(function () {
     });
 
     $('#layout1 .ly1col img').on('mouseleave', function() {
-        $('#info-imgs').css('opacity', '0');
+        $('.infodivs').css('opacity', '0');
     });
 
 
 
     // LAYOUT 2
     $('#ly2').click(function() {
-        $('#layout2').show();
-        $('#layout1').hide();
-        $('#layout3').hide();
-        $('#info-imgs').css('opacity', '1');  
-
         $('#infotat').empty();
         const subcarpeta = $('#ly2img').attr('data-tat');
         $('#infotat').text(subcarpeta);
     })
 
     let currentIndex = 0;
-    $('#ly2img').attr('src', imagenesRandom[currentIndex]);
-    $('#ly2img').attr('data-tat', imagenesRandom[currentIndex].split('/')[2]);
-    $('#infotat').text(imagenesRandom[currentIndex].split('/')[2]);
+    
 
     $('#ly2img').on('click', function(e) {
         const imageWidth = $(this).width();
@@ -185,7 +178,6 @@ $(document).ready(function () {
         $('#layout3').show();
         $('#layout1').hide();
         $('#layout2').hide();
-        $('#info-imgs').css('opacity', '0');  
     })
 
     const numImagenes = 10;
@@ -207,6 +199,88 @@ $(document).ready(function () {
             $('#ly3img').hide(); 
         }
     );
+
+
+
+    // LAYOUT 1 a LAYOUT 2
+    let chosenimg; 
+    $("#ly2").on("click", function () {
+        $('#info-imgs').css('opacity', '0');
+        $('body').css('overflow', 'hidden');
+        let visibleImages = $("#center img").filter(function () {
+            const rect = this.getBoundingClientRect();
+            return rect.top >= 0 && rect.bottom <= window.innerHeight;
+        });
+
+        chosenimg = visibleImages.first(); 
+        let allImages = $(".ly1col img").not(chosenimg);
+        let shuffledImages = allImages.toArray().sort(() => Math.random() - 0.5); 
+        let groups = [];
+        let groupSize = Math.ceil(shuffledImages.length / 6);
+
+        for (let i = 0; i < 10; i++) {
+            groups.push(shuffledImages.slice(i * groupSize, (i + 1) * groupSize));
+        }
+
+        groups.forEach((group, index) => {
+            setTimeout(() => {
+                $(group).animate({ opacity: 0 }, 200);
+            }, index * 200); 
+        });
+
+        setTimeout(() => {
+            let viewportWidth = $(window).width();
+            let viewportHeight = $(window).height();
+
+            let viewportCenterX = viewportWidth / 2;
+            let viewportCenterY = viewportHeight / 2;
+            
+            let chosenimgRect = chosenimg[0].getBoundingClientRect();
+            let chosenimgCenterX = chosenimgRect.left + (chosenimgRect.width / 2);
+            let chosenimgCenterY = chosenimgRect.top + (chosenimgRect.height / 2);
+
+            let translateX = viewportCenterX - chosenimgCenterX;
+            let translateY = viewportCenterY - chosenimgCenterY;
+
+            chosenimg.css({
+                transformOrigin: "center center", 
+                transition: "transform 0.6s ease",
+                transform: `translate(${translateX}px, ${translateY}px)`
+            });
+
+            setTimeout(() => {
+                let scaleFactor = viewportWidth / chosenimgRect.width;
+
+                chosenimg.css({
+                    transition: "transform 0.8s ease",
+                    transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})` 
+                });
+            }, 600); 
+        }, 1300);
+
+        setTimeout(() => {
+            $("#ly2img").attr("src", chosenimg.attr("src"));
+            $("#ly2img").attr("data-tat", chosenimg.attr("data-tat"));
+            currentIndex = imagenesRandom.findIndex(img => img === chosenimg.attr("src"));
+
+            $("#layout2").show();
+            
+            let infodivs = $(".infodivs").toArray();
+            let shuffledDivs = infodivs.sort(() => Math.random() - 0.5);
+
+            shuffledDivs.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 400);
+            });
+
+            setTimeout(() => {
+                $("#layout1").hide();
+            $('#info-imgs').css('opacity', '1');
+                $('body').css('overflow', '');
+            }, 500);
+        }, 2500);
+    });
     
 
 });
