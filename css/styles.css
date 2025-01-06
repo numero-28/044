@@ -125,6 +125,9 @@ img {
 #infotat {
     text-transform: uppercase;
 }
+#center img:first-child {
+    top: 27vh;
+}
 
 /* LAYOUT 2 */
 #layout2 {

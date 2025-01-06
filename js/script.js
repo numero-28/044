@@ -23,18 +23,17 @@ $(document).ready(function () {
 
 
     // PARA LAYOUT 1
-    $('#ly1').click(function() {
-        $('#layout1').show();
-        $('#layout2').hide();
-        $('#layout3').hide();  
-        $('.infodivs').css('opacity','0');  
-    })
+    // $('#ly1').click(function() {
+    //     $('#layout1').show();
+    //     $('#layout2').hide();
+    //     $('#layout3').hide();  
+    //     $('.infodivs').css('opacity','0');  
+    // })
     // crear imagenes en las columnas para meter todas
 
 
 
     gsap.registerPlugin(ScrollTrigger);
-    // Distribuir imágenes en columnas con márgenes dinámicos
     const ly1col = document.querySelectorAll('.ly1col');
     const numDivs = ly1col.length;
     const imgsPorDiv = Math.ceil(imagenesRandom.length / numDivs); // Distribuir las imágenes en columnas
@@ -62,10 +61,12 @@ $(document).ready(function () {
             // Márgenes aleatorios entre 10 y 26 rem
             const margenRandom = 10 + Math.random() * 16; // Margen entre 10 y 26 rem
             imgElement.style.marginBottom = `${margenRandom}rem`;
+            imgElement.style.position = `relative`;
 
             div.appendChild(imgElement);
         });
     });
+
 
     // Crear animación parallax con GSAP
     ly1col.forEach(columna => {
@@ -119,15 +120,9 @@ $(document).ready(function () {
 
 
     // LAYOUT 2
-    $('#ly2').click(function() {
-        $('#infotat').empty();
-        const subcarpeta = $('#ly2img').attr('data-tat');
-        $('#infotat').text(subcarpeta);
-    })
+ 
 
     let currentIndex = 0;
-    
-
     $('#ly2img').on('click', function(e) {
         const imageWidth = $(this).width();
         const clickPosition = e.pageX - $(this).offset().left;
@@ -201,12 +196,13 @@ $(document).ready(function () {
     );
 
 
-
+    // TRANSICIONES :)
     // LAYOUT 1 a LAYOUT 2
     let chosenimg; 
     $("#ly2").on("click", function () {
         $('#info-imgs').css('opacity', '0');
         $('body').css('overflow', 'hidden');
+
         let visibleImages = $("#center img").filter(function () {
             const rect = this.getBoundingClientRect();
             return rect.top >= 0 && rect.bottom <= window.innerHeight;
@@ -262,7 +258,11 @@ $(document).ready(function () {
             $("#ly2img").attr("src", chosenimg.attr("src"));
             $("#ly2img").attr("data-tat", chosenimg.attr("data-tat"));
             currentIndex = imagenesRandom.findIndex(img => img === chosenimg.attr("src"));
-
+            const imagePath = chosenimg.attr("src");
+            const pathParts = imagePath.split('/');
+            const subcarpeta = pathParts[pathParts.length - 2]; 
+            $('#infotat').empty();
+            $('#infotat').text(subcarpeta); 
             $("#layout2").show();
             
             let infodivs = $(".infodivs").toArray();
@@ -275,11 +275,77 @@ $(document).ready(function () {
             });
 
             setTimeout(() => {
+                chosenimg.css({
+                    transform: `` 
+                });
                 $("#layout1").hide();
-            $('#info-imgs').css('opacity', '1');
+                $('#info-imgs').css('opacity', '1');
                 $('body').css('overflow', '');
             }, 500);
         }, 2500);
+    });
+
+
+    // LAYOUT 2 a LAYOUT 1
+    $('#ly1').click(function () {
+
+        const infodivs = $(".infodivs").toArray();
+        infodivs.forEach((div, index) => {
+            setTimeout(() => {
+                $(div).animate({ opacity: 0 }, 200);
+            }, index * 400);
+        });
+
+        setTimeout(() => {
+            let viewportWidth = $(window).width();
+            let margin = 1.3 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+            let squareWidth = (viewportWidth / 6) - (2 * margin);
+            $("#ly2img").css({
+                "width": squareWidth + "px",
+                "transition": "width 0.8s ease",
+                "margin-left": "auto",
+                "margin-right": "auto",
+                "display": "block"
+            });
+        }, 1400);
+
+        setTimeout(() => {
+            $("#layout1").show();
+
+            const ly2imgSrc = $("#ly2img").attr("src");
+             const indexToRemove = imagenesRandom.indexOf(ly2imgSrc);
+        if (indexToRemove !== -1) {
+            imagenesRandom.splice(indexToRemove, 1); // Eliminar la imagen del array
+        }   
+
+            const centerDiv = $("#center");
+            const newFirstImage = document.createElement("img");
+            newFirstImage.src = ly2imgSrc;
+            newFirstImage.style.position = "relative";
+            newFirstImage.style.display = "block";
+            newFirstImage.style.marginBottom = "18rem"; 
+            centerDiv.prepend(newFirstImage);
+
+
+            let allImages = $(".ly1col img").toArray();
+            let shuffledImages = allImages.sort(() => Math.random() - 0.5);
+            let groups = [];
+            let groupSize = Math.ceil(shuffledImages.length / 6);
+
+            for (let i = 0; i < 6; i++) {
+                groups.push(shuffledImages.slice(i * groupSize, (i + 1) * groupSize));
+            }
+
+            groups.forEach((group, index) => {
+                setTimeout(() => {
+                    $(group).animate({ opacity: 1 }, 200);
+                }, index * 200);
+            });
+        }, 3000);
+
+        setTimeout(() => {
+            $("#layout2").hide();
+        }, 5000);
     });
     
 
