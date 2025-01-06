@@ -23,15 +23,6 @@ $(document).ready(function () {
 
 
     // PARA LAYOUT 1
-    // $('#ly1').click(function() {
-    //     $('#layout1').show();
-    //     $('#layout2').hide();
-    //     $('#layout3').hide();  
-    //     $('.infodivs').css('opacity','0');  
-    // })
-    // crear imagenes en las columnas para meter todas
-
-
 
     gsap.registerPlugin(ScrollTrigger);
     const ly1col = document.querySelectorAll('.ly1col');
@@ -120,7 +111,6 @@ $(document).ready(function () {
 
 
     // LAYOUT 2
- 
 
     let currentIndex = 0;
     $('#ly2img').on('click', function(e) {
@@ -169,11 +159,6 @@ $(document).ready(function () {
 
 
     // LAYOUT 3
-    $('#ly3').click(function() {
-        $('#layout3').show();
-        $('#layout1').hide();
-        $('#layout2').hide();
-    })
 
     const numImagenes = 10;
     const indices = tatuadores.reduce((acc, tatuador) => {
@@ -183,6 +168,13 @@ $(document).ready(function () {
 
     $('.tatuador').hover(
         function () {
+            $('#ly3img').css('opacity', '1')
+            $("#layout2").hide();
+            $("#layout2 > div").css({
+                "width": "",
+                "margin-left": "",
+                "margin-right": ""
+            });
             currentTatuador = $(this).data('tat');
             const index = indices[currentTatuador];
             const imagen = `${rutaBase}${currentTatuador}/imagen${index + 1}.jpg`; 
@@ -196,10 +188,39 @@ $(document).ready(function () {
     );
 
 
+
+
     // TRANSICIONES :)
-    // LAYOUT 1 a LAYOUT 2
-    let chosenimg; 
+
+    $("#ly1").on("click", function () {
+        if ($("#layout2").is(":visible")) {
+            ly2ToLy1();
+        } else if ($("#layout3").is(":visible")) {
+            ly3ToLy1();
+        }
+    });
+
     $("#ly2").on("click", function () {
+        if ($("#layout1").is(":visible")) {
+            ly1ToLy2();
+        } else if ($("#layout3").is(":visible")) {
+            ly3ToLy2();
+        }
+    });
+
+    $("#ly3").on("click", function () {
+        if ($("#layout1").is(":visible")) {
+            ly1ToLy3();
+        } else if ($("#layout2").is(":visible")) {
+            ly2ToLy3();
+        }
+    });
+
+
+
+    // LAYOUT 1 a LAYOUT 2
+    function ly1ToLy2() {
+        let chosenimg; 
         $('#info-imgs').css('opacity', '0');
         $('body').css('overflow', 'hidden');
 
@@ -269,7 +290,7 @@ $(document).ready(function () {
                     transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})` 
                 });
             }, 600); 
-        }, 1300);
+        }, 1400);
 
         setTimeout(() => {
             $("#ly2img").attr("src", chosenimg.attr("src"));
@@ -288,7 +309,7 @@ $(document).ready(function () {
             shuffledDivs.forEach((div, index) => {
                 setTimeout(() => {
                     $(div).animate({ opacity: 1 }, 200);
-                }, index * 400);
+                }, index * 300);
             });
 
             setTimeout(() => {
@@ -299,18 +320,18 @@ $(document).ready(function () {
                 $('#info-imgs').css('opacity', '1');
                 $('body').css('overflow', '');
             }, 500);
-        }, 2500);
-    });
+        }, 2900);
+    }    
 
 
     // LAYOUT 2 a LAYOUT 1
-    $('#ly1').click(function () {
+    function ly2ToLy1() {
 
         const infodivs = $(".infodivs").toArray();
         infodivs.forEach((div, index) => {
             setTimeout(() => {
                 $(div).animate({ opacity: 0 }, 200);
-            }, index * 400);
+            }, index * 200);
         });
 
         setTimeout(() => {
@@ -324,7 +345,7 @@ $(document).ready(function () {
                 "margin-right": "auto",
                 "display": "block"
             });
-        }, 1400);
+        }, 1200);
 
         setTimeout(() => {
             $("#layout1").show();
@@ -352,12 +373,154 @@ $(document).ready(function () {
                     $(group).animate({ opacity: 1 }, 200);
                 }, index * 200);
             });
-        }, 3000);
+        }, 2000);
 
         setTimeout(() => {
             $("#layout2").hide();
-        }, 5000);
-    });
+            $("#ly2img").css({
+                "width": "",
+                "margin-left": "",
+                "margin-right": "",
+                "display": ""
+            });
+        }, 3500);
+    }
+
+
+
+    // LAYOUT 2 a LAYOUT 3
+    function ly2ToLy3() {
+
+        const infodivs = $(".infodivs").toArray();
+        infodivs.forEach((div, index) => {
+            setTimeout(() => {
+                $(div).animate({ opacity: 0 }, 200);
+            }, index * 200);
+        });
+
+        setTimeout(() => {
+            $("#layout2 > div").css({
+                "width": "20%",
+                "transition": "width 0.8s ease",
+                "margin-left": "auto",
+                "margin-right": "auto",
+            });
+        }, 1200);
+
+        setTimeout(() => {
+            $('#layout3').show();
+            let tatuadores = $(".tatuador").toArray();
+            let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+            shuffledTats.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 200);
+            });
+        }, 2000);
+    }
+
+
+
+    // LAYOUT 3 a LAYOUT 2
+    function ly3ToLy2() {
+        $('#layout2 > div').css('opacity', '0');
+        let tatuadores = $(".tatuador").toArray();
+        let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+        shuffledTats.forEach((div, index) => {
+            setTimeout(() => {
+                $(div).animate({ opacity: 0 }, 200);
+            }, index * 200);
+        });
+
+        setTimeout(() => {
+            $('#layout3').hide();
+            $('#layout2').show();
+           
+        }, 2000);
+
+        setTimeout(() => {
+             $('#layout2 > div').css('opacity', '1');
+            $('#layout2 > div').css("transition", "opacity 1s ease");
+        }, 2300);
+
+        setTimeout(() => {
+            const infodivs = $(".infodivs").toArray();
+            infodivs.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 300);
+            });        
+        }, 3000);
+    }
+
+
+
+    // LAYOUT 1 a LAYOUT 3
+    function ly1ToLy3() {
+
+        let allImages = $(".ly1col img");
+        let shuffledImages = allImages.toArray().sort(() => Math.random() - 0.5); 
+        let groups = [];
+        let groupSize = Math.ceil(shuffledImages.length / 6);
+
+        for (let i = 0; i < 10; i++) {
+            groups.push(shuffledImages.slice(i * groupSize, (i + 1) * groupSize));
+        }
+
+        groups.forEach((group, index) => {
+            setTimeout(() => {
+                $(group).animate({ opacity: 0 }, 200);
+            }, index * 200); 
+        });
+
+        setTimeout(() => {
+            $('#layout1').hide();
+            $('#layout3').show();
+            let tatuadores = $(".tatuador").toArray();
+            let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+            shuffledTats.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 200);
+            });
+        }, 1600);
+    }
+
+
+
+    // LAYOUT 3 a LAYOUT 1
+    function ly3ToLy1() {
+
+        let tatuadores = $(".tatuador").toArray();
+        let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+        shuffledTats.forEach((div, index) => {
+            setTimeout(() => {
+                $(div).animate({ opacity: 0 }, 200);
+            }, index * 200);
+        });
+
+        setTimeout(() => {
+            $("#layout1").show();
+            $("#layout3").hide();
+
+            let allImages = $(".ly1col img").toArray();
+            let shuffledImages = allImages.sort(() => Math.random() - 0.5);
+            let groups = [];
+            let groupSize = Math.ceil(shuffledImages.length / 6);
+
+            for (let i = 0; i < 6; i++) {
+                groups.push(shuffledImages.slice(i * groupSize, (i + 1) * groupSize));
+            }
+
+            groups.forEach((group, index) => {
+                setTimeout(() => {
+                    $(group).animate({ opacity: 1 }, 200);
+                }, index * 200);
+            });
+        }, 2000);
+
+    }
+
     
 
 });

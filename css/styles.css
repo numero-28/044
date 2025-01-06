@@ -152,6 +152,8 @@ img {
 /* LAYOUT 3 */
 #layout3 {
     display: none;
+    position: absolute;
+    top: 0;
 }
 #ttimg {
     display: flex;
@@ -172,7 +174,8 @@ img {
     margin-right: 5vw;
     margin-bottom: 7vh;
 }
-#tatuadores > div {
+.tatuador {
+    opacity: 0;
     cursor: pointer;
     z-index: 20;
     position: absolute;
@@ -218,5 +221,6 @@ img {
 }
 
 #ly3img {
+    opacity: 0;
     filter: brightness(0.8);
 }
