@@ -23,7 +23,9 @@
     --w: #f1f2f1;
 }
 
-
+::-webkit-scrollbar {
+    display: none;
+}
 body {
     background-color: var(--b);
 }
@@ -80,6 +82,8 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+}
+.infodivs {
     opacity: 0;
 }
 #info-imgs .line {
@@ -107,6 +111,10 @@ img {
     row-gap: 3rem;
     padding: 1.3rem;
 }
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
 .ly1col {
     overflow: hidden; /* Ocultar cualquier contenido que salga del contenedor */
     position: relative;
@@ -119,6 +127,9 @@ img {
 }
 #infotat {
     text-transform: uppercase;
+}
+#center img:first-child {
+    top: 27vh;
 }
 
 /* LAYOUT 2 */
@@ -144,6 +155,8 @@ img {
 /* LAYOUT 3 */
 #layout3 {
     display: none;
+    position: absolute;
+    top: 0;
 }
 #ttimg {
     display: flex;
@@ -164,7 +177,8 @@ img {
     margin-right: 5vw;
     margin-bottom: 7vh;
 }
-#tatuadores > div {
+.tatuador {
+    opacity: 0;
     cursor: pointer;
     z-index: 20;
     position: absolute;
@@ -210,6 +224,7 @@ img {
 }
 
 #ly3img {
+    opacity: 0;
     filter: brightness(0.8);
 }
 
