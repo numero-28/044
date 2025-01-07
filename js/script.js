@@ -213,13 +213,7 @@ $(document).ready(function () {
 
 
     // LAYOUT 4 
-    $('#ly4').click(function() {
-        $('#layout4').show();  
-        $('#layout3').hide();
-        $('#layout1').hide();
-        $('#layout2').hide();
-        $('#info-imgs').css('opacity', '0');  
-    })
+
     // GALERÍA 
     $(function () {
     const container = $('#phototatscroll'), bigPhoto = $('#phototat img');
@@ -232,33 +226,73 @@ $(document).ready(function () {
         bigPhoto.attr('src', photos.eq(visibleIndex).attr('src'));
 
         if (scrollTop + container.height() >= container[0].scrollHeight) container.scrollTop(0);
-        else if (scrollTop <= 0) container.scrollTop(container[0].scrollHeight - container.height());
-    });
+        else if (scrollTop <= -1) container.scrollTop(container[0].scrollHeight - container.height());
+        });
     });
 
-    // MODAL 
+// MODAL 
 
     const openModal = document.getElementById('openModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModal = document.getElementById('closeModal');
+    
 
-    // Abrir el modal
+   // Abrir el modal con efecto de giro
     openModal.addEventListener('click', () => {
     modalOverlay.style.display = 'flex'; // Mostrar el modal
+    setTimeout(() => {
+        modalOverlay.classList.add('show'); // Aplicamos la clase 'show' para iniciar la animación
+    }, 50); // Le damos un pequeño retraso para asegurar que el modal se muestra antes de que empiece la animación
     });
-
-    // Cerrar el modal
+  
+  // Cerrar el modal
     closeModal.addEventListener('click', () => {
-    modalOverlay.style.display = 'none'; // Ocultar el modal
+    modalOverlay.classList.remove('show'); // Remover la clase 'show' para el efecto de cierre
+    setTimeout(() => {
+        modalOverlay.style.display = 'none'; // Ocultar el modal después de la animación
+    }, 600); // Esperamos que termine la animación antes de esconder el modal
     });
-
-    // Cerrar modal al hacer clic fuera de él
+  
+  // Cerrar el modal al hacer clic fuera de él
     modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
-        modalOverlay.style.display = 'none';
-    }
+        modalOverlay.classList.remove('show'); // Remover la clase 'show' para el efecto de cierre
+        setTimeout(() => {
+            modalOverlay.style.display = 'none'; // Ocultar el modal después de la animación
+        }, 600); // Esperamos que termine la animación antes de esconder el modal
+     }
     });
-
-    
+  
+  // ARRAYS 
+  const tatuador = [
+    {
+      id: "acid", name: "ACID AMBAR", cities: "CURRENTLY : <br>MADRID [ 09/01/25 - 27/03/25 ]  <br> SOON : <br>VALENCIA [ 01/04/25 - 07/04/25 ]", style: "[ STYLE ] NEW TRIBAL", handle: "@acid.ambar", email: "acid.ambar.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/acid/", logo: "media/044logo.svg"
+    },
+    {
+      id: "nando", name: "NANDO DIABLO", cities: "CURRENTLY : <br>MADRID [ TILL 27/04/25 ]  <br> SOON : <br> PARIS BERLIN LONDON AMSTERDAM SWITZERLAND NY LA MEXICO", style: "[ STYLE ] NEW TRIBAL / BLACKWORK", handle: "@nando.diablo_", email: "nando.diablo.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nando/", logo: "media/044logo.svg"
+    },
+    {
+      id: "infrababy", name: "INFRABABY", cities: "CURRENTLY : <br>MADRID [ TILL 22/05/25 ]  <br> SOON : <br>LONDON", style: "[ STYLE ] TYPOGRAPHY / SURREALISM", handle: "@infrababy", email: "infrababy.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/infrababy/", logo: "media/044logo.svg"
+    },
+    {
+      id: "nona", name: "NONA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] TRADITIONAL / ART NOUVEAU", handle: "@nona.tatt", email: "nona.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nona/", logo: "media/044logo.svg"
+    },
+    {
+      id: "santa.gemz", name: "SANTA GEMZZ", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> BARCELONA", style: "[ STYLE ] TOOTH GEMS", handle: "@santagemzzz", email: "santagemzzz.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/santa.gemz/", logo: "media/044logo.svg"
+    },
+    {
+      id: "zepa", name: "ZEPA", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> NY [15/01/25 - 22/01/25]", style: "[ STYLE ] FINE LINE / LETTERING / TRADITIONAL", handle: "@zepa.ttt", email: "zepa.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/zepa/", logo: "media/044logo.svg"
+    },
+    {
+      id: "alex.aramburu", name: "ALEX ARAMBURU", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] ABSTRACT / LINE", handle: "@alex.a.aramburu", email: "aramburu.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/alex.aramburu/", logo: "media/044logo.svg"
+    },
+    {
+      id: "elvira", name: "ELVIRA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] FINE LINE / REALISM", handle: "@elvirambarbara", email: "elvira.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/elvira/", logo: "media/044logo.svg"
+    },
+    {
+      id: "galgo", name: "GALGO CANALLA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] NEO TRIBAL / ORNAMENTAL", handle: "@galgo.canalla", email: "galgo.canalla.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/galgo/", logo: "media/044logo.svg"
+    }
+  ];
+  
 
 });
