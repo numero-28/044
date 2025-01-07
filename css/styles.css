@@ -116,7 +116,6 @@ img {
     margin-left: 0;
 }
 .ly1col {
-    overflow: hidden; /* Ocultar cualquier contenido que salga del contenedor */
     position: relative;
     will-change: transform;
 }
