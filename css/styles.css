@@ -116,6 +116,7 @@ img {
     margin-left: 0;
 }
 .ly1col {
+    height: fit-content;
     position: relative;
     will-change: transform;
 }
@@ -129,6 +130,9 @@ img {
 }
 #center img:first-child {
     top: 27vh;
+}
+#center img:nth-child(2) {
+    margin-top: 10rem;
 }
 
 /* LAYOUT 2 */
@@ -179,7 +183,7 @@ img {
 .tatuador {
     opacity: 0;
     cursor: pointer;
-    z-index: 20;
+    z-index: 18;
     position: absolute;
     color: var(--w);
     font-family: var(--helve-bd);
@@ -227,14 +231,20 @@ img {
     filter: brightness(0.8);
 }
 
+
 /* US */
 
 #us {
     display: none;
-    position: relative;
+    position: fixed;
+    background: var(--b);
+    top: 0;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    z-index: 19;
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 
 #us-video {
@@ -243,9 +253,10 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Asegura que el video cubra todo el fondo sin deformarse */
+    object-fit: cover; 
     z-index: -1;
-    opacity: 25%;
+    opacity: 0%;
+    transition: opacity .8s ease;
 }
 
 #us > div, #us-data > div {
@@ -253,6 +264,7 @@ img {
     font-family: var(--helve-bd);
     font-size: 1em;
     color: var(--w);
+    opacity: 0;
 }
 
 #us > div:nth-child(1) {

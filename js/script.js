@@ -64,11 +64,11 @@ $(document).ready(function () {
 
         // Determinar la velocidad según la clase
         if (columna.classList.contains('mid')) {
-            velocidad = 1.3; // Más lenta
+            velocidad = 1.3;
         } else if (columna.classList.contains('fast')) {
-            velocidad = 1.6; // Aún más lenta
+            velocidad = 1.6; 
         } else {
-            velocidad = 1; // Rápida (por defecto)
+            velocidad = 1; 
         }
 
         // Configurar efecto parallax
@@ -87,7 +87,15 @@ $(document).ready(function () {
                 scrub: true, // Sincroniza el movimiento con el scroll
             },
         });
+        const ly1col = document.querySelectorAll('.ly1col');
+
+// Registrar en la consola la altura de cada elemento
+ly1col.forEach((columna, index) => {
+    console.log(`Altura de ly1col[${index}]: ${columna.scrollHeight}px`);
+});
     });
+
+
 
 
     $('#layout1 .ly1col img').on('mouseenter', function() {
@@ -110,16 +118,6 @@ $(document).ready(function () {
     
 
     // LAYOUT 2
-    $('#ly2').click(function() {
-        $('#layout2').show();
-        $('#layout1').hide();
-        $('#layout3').hide();
-        $('#info-imgs').css('opacity', '1');  
-
-        $('#infotat').empty();
-        const subcarpeta = $('#ly2img').attr('data-tat');
-        $('#infotat').text(subcarpeta);
-    })
 
     let currentIndex = 0;
     $('#ly2img').on('click', function(e) {
@@ -168,13 +166,7 @@ $(document).ready(function () {
 
 
     // LAYOUT 3
-    $('#ly3').click(function() {
-        $('#layout3').show();
-        $('#layout1').hide();
-        $('#layout2').hide();
-        $('#info-imgs').css('opacity', '0');  
-    })
-
+    
     const numImagenes = 10;
     const indices = tatuadores.reduce((acc, tatuador) => {
         acc[tatuador] = 0;
@@ -213,8 +205,7 @@ $(document).ready(function () {
         } else if ($("#layout3").is(":visible")) {
             ly3ToLy1();
         }
-                $('#us').hide(); 
-
+        hideUs();
     });
 
     $("#ly2").on("click", function () {
@@ -223,8 +214,7 @@ $(document).ready(function () {
         } else if ($("#layout3").is(":visible")) {
             ly3ToLy2();
         }
-                $('#us').hide(); 
-
+        hideUs();
     });
 
     $("#ly3").on("click", function () {
@@ -233,18 +223,10 @@ $(document).ready(function () {
         } else if ($("#layout2").is(":visible")) {
             ly2ToLy3();
         }
-                        $('#us').hide(); 
-
+        hideUs();
     });
 
-    // US
-    $('#us-bt').click(function() {
-        $('#layout3').hide();
-        $('#layout1').hide();
-        $('#layout2').hide();
-        $('#us').show();
-        $('#info-imgs').css('opacity', '0');  
-    })
+   
 
     // LAYOUT 1 a LAYOUT 2
     function ly1ToLy2() {
@@ -451,6 +433,13 @@ $(document).ready(function () {
 
     // LAYOUT 3 a LAYOUT 2
     function ly3ToLy2() {
+        if (!$('#ly2img').attr('src')) {
+            let currentIndex = 0;
+            $('#ly2img').attr('src', imagenesRandom[currentIndex]);
+            $('#ly2img').attr('data-tat', imagenesRandom[currentIndex].split('/')[2]);
+            $('#infotat').text(imagenesRandom[currentIndex].split('/')[2]);
+        }
+        
         $('#layout2 > div').css('opacity', '0');
         let tatuadores = $(".tatuador").toArray();
         let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
@@ -549,6 +538,45 @@ $(document).ready(function () {
 
     }
 
+
+
+    // US
+    $('#us-bt').click(function() {
+        $('body').css('overflow', 'hidden');
+        $('#us').show();
+        
+        setTimeout(() => {
+            $('#us-video').css('opacity', '25%')
+            $('#us').css('opacity', '100%')
+            let infoUs = $("#us > div, #us-data > div").toArray();
+            let shuffledInfoUs = infoUs.sort(() => Math.random() - 0.5);
+            shuffledInfoUs.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 130);
+            });
+        }, 200);
+    })
+
+    function hideUs() {
+        let infoUs = $("#us > div, #us-data > div").toArray();
+        let shuffledInfoUs = infoUs.sort(() => Math.random() - 0.5);
+        shuffledInfoUs.forEach((div, index) => {
+            setTimeout(() => {
+                $(div).animate({ opacity: 0 }, 200);
+            }, index * 50);
+        });
+        
+        setTimeout(() => {
+            $('#us-video').css('opacity', '')
+            $('#us').css('opacity', '')
+        }, 600);
+
+        setTimeout(() => {
+            $('#us').hide(); 
+            $('body').css('overflow', '');
+        }, 800);
+    }
     
 
 });
