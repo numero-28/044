@@ -26,7 +26,8 @@ $(document).ready(function () {
       $('#ly1').click(function() {
           $('#layout1').show();
           $('#layout2').hide();
-          $('#layout3').hide();  
+          $('#layout3').hide(); 
+          $('#us').hide(); 
           $('#info-imgs').css('opacity','0');  
       });
   
@@ -138,6 +139,7 @@ $(document).ready(function () {
         $('#layout2').show();
         $('#layout1').hide();
         $('#layout3').hide();
+        $('#us').hide();
         $('#info-imgs').css('opacity', '1');  
 
         $('#infotat').empty();
@@ -200,6 +202,7 @@ $(document).ready(function () {
         $('#layout3').show();
         $('#layout1').hide();
         $('#layout2').hide();
+        $('#us').hide();
         $('#info-imgs').css('opacity', '0');  
     })
 
