@@ -12,6 +12,10 @@
     </head>
 
     <body>
+        <div id="landing">
+            <model-viewer id="myModel" src="media/3d/044logo.gltf" shadow-intensity="0" shadow-softness="0" camera-target="0m 0m -0.07m" exposure="0.3" min-field-of-view="22.98deg" disable-zoom camera-orbit="0deg 15deg 110%">
+            </model-viewer>
+        </div>
         <div id="menu">
             <div id="logo" class="col-2">
                 <img src="media/044logo.svg">
@@ -154,11 +158,11 @@
         </div>
 
 
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
         <script src="js/script.js"></script>
     </body>
 </html>

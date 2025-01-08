@@ -33,9 +33,26 @@ img {
     width: 100%;
 }
 
+/* LANDING */
+#landing {
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--b);
+    cursor: cell;
+}
+
+#myModel {
+    width: 100%;
+    height: 100%;
+}
+
+
+
 /* MENÜ */
 #menu {
-    display: flex;
+    display: none;
     padding: 1rem 1.5rem;
     position: fixed;
     width: 100%;
@@ -73,7 +90,7 @@ img {
 
 /* INFO IMÁGENES */
 #info-imgs {
-    display: flex;
+    display: none;
     width: 100%;
     flex-direction: column;
     position: fixed;
@@ -105,6 +122,7 @@ img {
 #layout1 {
     padding-top: 3rem;
     overflow: hidden;
+    display: none;
 }
 #layout1 > div {
     display: flex;
@@ -125,6 +143,7 @@ img {
 #layout1 .ly1col img {
     filter: brightness(0.7);
     margin: 0;
+    cursor: pointer;
 }
 #infotat {
     text-transform: uppercase;

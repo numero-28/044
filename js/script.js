@@ -1,4 +1,30 @@
 $(document).ready(function () {
+
+    // 3D landing
+    function getMouse(e) {
+        return [
+            e.clientX, // Coordenada X del ratón
+            e.clientY  // Coordenada Y del ratón
+        ]
+    }
+    
+    document.onmousemove = function(e) {
+        const mouse = getMouse(e);  // Obtener la posición del ratón
+        const modelViewer = document.querySelector("#myModel");
+    
+        // Calcular los ángulos según la posición del ratón
+        // Ajustamos los ángulos para que no haya límites rígidos y haya un rango más natural.
+        const horizontalAngle = (mouse[0] / window.innerWidth) * 270;  // Ángulo horizontal (0 a 360)
+        const verticalAngle = ((mouse[1] / window.innerHeight) * 180) - 90;  // Ángulo vertical (-90 a 90)
+    
+        // Aseguramos que los ángulos estén dentro de los rangos válidos para evitar problemas con la cámara
+        const clampedVerticalAngle = Math.max(-120, Math.min(-100, verticalAngle));  // Limitar la rotación vertical entre -89 y 89 grados
+        
+        // Actualizar la cámara para que siga la posición del ratón
+        modelViewer.cameraOrbit = `${horizontalAngle}deg ${clampedVerticalAngle}deg 110%`;
+    };
+
+
     // arrays tatuadores y array de todo
     const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
     const rutaBase = "./media/";
