@@ -593,22 +593,20 @@ ly1col.forEach((columna, index) => {
         $('#close').show();
 
         const imgClicked = $(this).attr('src');
-        const subcarpeta = imgClicked.split('/')[2]; 
+        const subc = imgClicked.split('/')[2]; 
         
         const phototatscroll = $('#phototatscroll');
         phototatscroll.empty(); 
         
-
         $('#fotoPrincipal').attr('src', imgClicked);
 
-        tatuadorImagenes[subcarpeta]?.forEach(imagen => {
-            phototatscroll.append(`<img src="${imagen}" alt="${subcarpeta} image">`);
+        tatuadorImagenes[subc]?.forEach(imagen => {
+            phototatscroll.append(`<img src="${imagen}" alt="${subc} image">`);
         });
 
-        const tatuadorSeleccionado = tatuador.find(t => t.baseImagePath.includes(subcarpeta));
+        const tatuadorSeleccionado = infoTat.find(t => t.baseImagePath.includes(subc));
         console.log(tatuadorSeleccionado);
         
-
         if (tatuadorSeleccionado) {
             $('#fotoPrincipal').attr('src', imgClicked); 
 
@@ -631,18 +629,47 @@ ly1col.forEach((columna, index) => {
 
             initializePhotoScroll();
         }
-    })
+    });
 
 
     $('#close').click(function() {
-        
-
         $('#layout4').css('opacity', '0');
         $('#layout4').css('pointer-events', 'none');
         $('#ly1, #ly2, #ly3').show();
         $('#close').hide();
-    })
+    });
 
+
+    // arrays info 
+    const infoTat = [
+        {
+        id: "acid.ambar", name: "ACID AMBAR", cities: "CURRENTLY : <br>MADRID [ 09/01/25 - 27/03/25 ]  <br> SOON : <br>VALENCIA [ 01/04/25 - 07/04/25 ]", style: "[ STYLE ] NEW TRIBAL", handle: "@acid.ambar", email: "acid.ambar.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/acid.ambar/", logo: "media/044logo.svg"
+        },
+        {
+        id: "nando.diablo_", name: "NANDO DIABLO", cities: "CURRENTLY : <br>MADRID [ TILL 27/04/25 ]  <br> SOON : <br> PARIS BERLIN LONDON AMSTERDAM SWITZERLAND NY LA MEXICO", style: "[ STYLE ] NEW TRIBAL / BLACKWORK", handle: "@nando.diablo_", email: "nando.diablo.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nando.diablo_/", logo: "media/044logo.svg"
+        },
+        {
+        id: "infrababy", name: "INFRABABY", cities: "CURRENTLY : <br>MADRID [ TILL 22/05/25 ]  <br> SOON : <br>LONDON", style: "[ STYLE ] TYPOGRAPHY / SURREALISM", handle: "@infrababy", email: "infrababy.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/infrababy/", logo: "media/044logo.svg"
+        },
+        {
+        id: "nona.tatt", name: "NONA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] TRADITIONAL / ART NOUVEAU", handle: "@nona.tatt", email: "nona.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nona.tatt/", logo: "media/044logo.svg"
+        },
+        {
+        id: "santagemzz", name: "SANTA GEMZZ", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> BARCELONA", style: "[ STYLE ] TOOTH GEMS", handle: "@santagemzzz", email: "santagemzzz.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/santagemzz/", logo: "media/044logo.svg"
+        },
+        {
+        id: "zepa.ttt", name: "ZEPA", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> NY [15/01/25 - 22/01/25]", style: "[ STYLE ] FINE LINE / LETTERING / TRADITIONAL", handle: "@zepa.ttt", email: "zepa.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/zepa.ttt/", logo: "media/044logo.svg"
+        },
+        {
+        id: "alex.a.aramburu", name: "ALEX ARAMBURU", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] ABSTRACT / LINE", handle: "@alex.a.aramburu", email: "aramburu.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/alex.a.aramburu/", logo: "media/044logo.svg"
+        },
+        {
+        id: "elvirambarbara", name: "ELVIRA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] FINE LINE / REALISM", handle: "@elvirambarbara", email: "elvira.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/elvirambarbara/", logo: "media/044logo.svg"
+        },
+        {
+        id: "galgocanalla", name: "GALGO CANALLA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] NEO TRIBAL / ORNAMENTAL", handle: "@galgo.canalla", email: "galgo.canalla.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/galgocanalla/", logo: "media/044logo.svg"
+        }
+    ];
 
 
     // galería: se actualiza la imagen grande al hacer scroll
@@ -663,70 +690,37 @@ ly1col.forEach((columna, index) => {
     }
 
 
-
-    // MODAL 
+    // modal
 
     const openModal = document.getElementById('openModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModal = document.getElementById('closeModal');
     
-
-   // Abrir el modal con efecto de giro
     openModal.addEventListener('click', () => {
-    modalOverlay.style.display = 'flex'; // Mostrar el modal
-    setTimeout(() => {
-        modalOverlay.classList.add('show'); // Aplicamos la clase 'show' para iniciar la animación
-    }, 50); // Le damos un pequeño retraso para asegurar que el modal se muestra antes de que empiece la animación
+        modalOverlay.style.display = 'flex'; 
+        setTimeout(() => {
+            modalOverlay.classList.add('show'); 
+        }, 50);
     });
   
-  // Cerrar el modal
     closeModal.addEventListener('click', () => {
-    modalOverlay.classList.remove('show'); // Remover la clase 'show' para el efecto de cierre
-    setTimeout(() => {
-        modalOverlay.style.display = 'none'; // Ocultar el modal después de la animación
-    }, 600); // Esperamos que termine la animación antes de esconder el modal
+        modalOverlay.classList.remove('show'); 
+        setTimeout(() => {
+            modalOverlay.style.display = 'none';
+        }, 600); 
     });
   
-  // Cerrar el modal al hacer clic fuera de él
     modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
-        modalOverlay.classList.remove('show'); // Remover la clase 'show' para el efecto de cierre
+        modalOverlay.classList.remove('show'); 
         setTimeout(() => {
-            modalOverlay.style.display = 'none'; // Ocultar el modal después de la animación
-        }, 600); // Esperamos que termine la animación antes de esconder el modal
+            modalOverlay.style.display = 'none'; 
+        }, 600); 
      }
     });
   
-  // arrays info 
-  const tatuador = [
-    {
-      id: "acid.ambar", name: "ACID AMBAR", cities: "CURRENTLY : <br>MADRID [ 09/01/25 - 27/03/25 ]  <br> SOON : <br>VALENCIA [ 01/04/25 - 07/04/25 ]", style: "[ STYLE ] NEW TRIBAL", handle: "@acid.ambar", email: "acid.ambar.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/acid.ambar/", logo: "media/044logo.svg"
-    },
-    {
-      id: "nando.diablo_", name: "NANDO DIABLO", cities: "CURRENTLY : <br>MADRID [ TILL 27/04/25 ]  <br> SOON : <br> PARIS BERLIN LONDON AMSTERDAM SWITZERLAND NY LA MEXICO", style: "[ STYLE ] NEW TRIBAL / BLACKWORK", handle: "@nando.diablo_", email: "nando.diablo.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nando.diablo_/", logo: "media/044logo.svg"
-    },
-    {
-      id: "infrababy", name: "INFRABABY", cities: "CURRENTLY : <br>MADRID [ TILL 22/05/25 ]  <br> SOON : <br>LONDON", style: "[ STYLE ] TYPOGRAPHY / SURREALISM", handle: "@infrababy", email: "infrababy.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/infrababy/", logo: "media/044logo.svg"
-    },
-    {
-      id: "nona.tatt", name: "NONA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] TRADITIONAL / ART NOUVEAU", handle: "@nona.tatt", email: "nona.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nona.tatt/", logo: "media/044logo.svg"
-    },
-    {
-      id: "santagemzz", name: "SANTA GEMZZ", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> BARCELONA", style: "[ STYLE ] TOOTH GEMS", handle: "@santagemzzz", email: "santagemzzz.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/santagemzz/", logo: "media/044logo.svg"
-    },
-    {
-      id: "zepa.ttt", name: "ZEPA", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> NY [15/01/25 - 22/01/25]", style: "[ STYLE ] FINE LINE / LETTERING / TRADITIONAL", handle: "@zepa.ttt", email: "zepa.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/zepa.ttt/", logo: "media/044logo.svg"
-    },
-    {
-      id: "alex.a.aramburu", name: "ALEX ARAMBURU", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] ABSTRACT / LINE", handle: "@alex.a.aramburu", email: "aramburu.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/alex.a.aramburu/", logo: "media/044logo.svg"
-    },
-    {
-      id: "elvirambarbara", name: "ELVIRA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] FINE LINE / REALISM", handle: "@elvirambarbara", email: "elvira.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/elvirambarbara/", logo: "media/044logo.svg"
-    },
-    {
-      id: "galgocanalla", name: "GALGO CANALLA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] NEO TRIBAL / ORNAMENTAL", handle: "@galgo.canalla", email: "galgo.canalla.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/galgocanalla/", logo: "media/044logo.svg"
-    }
-  ];
+
+    
   
 
 });
