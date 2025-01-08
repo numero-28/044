@@ -15,6 +15,8 @@ $(document).ready(function () {
 
 
     const todas = arraysTatuadores.flat();
+    console.log(todas);
+    
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -93,12 +95,6 @@ $(document).ready(function () {
                 scrub: true, // Sincroniza el movimiento con el scroll
             },
         });
-        const ly1col = document.querySelectorAll('.ly1col');
-
-// Registrar en la consola la altura de cada elemento
-ly1col.forEach((columna, index) => {
-    console.log(`Altura de ly1col[${index}]: ${columna.scrollHeight}px`);
-});
     });
 
 
@@ -139,7 +135,8 @@ ly1col.forEach((columna, index) => {
         } else if (clickPosition > imageWidth * 0.7) {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
         } else {
-            return;
+            const imgClicked = $(this).attr('src');
+            showLy4(imgClicked);
         }
 
         do {
@@ -588,11 +585,15 @@ ly1col.forEach((columna, index) => {
 
     // LAYOUT 4 
     $('#layout1 img').click(function() {
-        $('#layout4').css({ opacity: 1, 'pointer-events': 'all' }); 
-        $('#ly1, #ly2, #ly3').hide();
-        $('#close').show();
-
         const imgClicked = $(this).attr('src');
+        showLy4(imgClicked);
+    });
+
+    function showLy4(imgClicked) {
+        $('#layout4').css({ opacity: 1, 'pointer-events': 'all' }); 
+        $('#ly1, #ly2, #ly3, #life-bt, #us-bt').hide();
+        $('#close').show();
+        
         const subc = imgClicked.split('/')[2]; 
         
         const phototatscroll = $('#phototatscroll');
@@ -629,13 +630,17 @@ ly1col.forEach((columna, index) => {
 
             initializePhotoScroll();
         }
-    });
+    }
 
+    $('#layout3 .tatuador').click(function () {
+        const imgClicked = $('#ly3img').attr('src'); 
+        showLy4(imgClicked); 
+    });
 
     $('#close').click(function() {
         $('#layout4').css('opacity', '0');
         $('#layout4').css('pointer-events', 'none');
-        $('#ly1, #ly2, #ly3').show();
+        $('#ly1, #ly2, #ly3, #life-bt, #us-bt').show();
         $('#close').hide();
     });
 
