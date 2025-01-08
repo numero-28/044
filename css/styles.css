@@ -105,6 +105,7 @@ img {
 #layout1 {
     padding-top: 3rem;
     overflow: hidden;
+    height: 5700px;
 }
 #layout1 > div {
     display: flex;
@@ -125,6 +126,9 @@ img {
 #layout1 .ly1col img {
     filter: brightness(0.7);
     margin: 0;
+}
+.ly1col img:last-child {
+    margin-bottom: 0!important;
 }
 #infotat {
     text-transform: uppercase;

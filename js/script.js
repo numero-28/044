@@ -33,70 +33,72 @@ $(document).ready(function () {
 
     gsap.registerPlugin(ScrollTrigger);
     const ly1col = document.querySelectorAll('.ly1col');
-    const numDivs = ly1col.length;
-    const imgsPorDiv = Math.ceil(imagenesRandom.length / numDivs); // Distribuir las imágenes en columnas
+    const distribucion = {
+        fast: 22,
+        mid: 18,
+        slow: 10
+    };
 
-    // Calcular la cantidad de imágenes necesarias para cada columna basada en su velocidad
-    function calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv) {
-        return Math.ceil(imgsPorDiv * (1 / velocidad)); // Menos imágenes para las columnas lentas
-    }
+    let imagenIndex = 0; 
+    ly1col.forEach(div => {
+        const clase = div.classList.contains('fast') ? 'fast' : 
+            div.classList.contains('mid') ? 'mid' : 
+            'slow';
+        const numImagenes = distribucion[clase];
 
-    // Distribuir imágenes y asignarles márgenes aleatorios
-    ly1col.forEach((div, index) => {
-        const velocidad = (div.classList.contains('fast')) ? 1.6 : 
-                        (div.classList.contains('mid')) ? 1.3 : 1; // Ajustamos la velocidad según la clase
+        for (let i = 0; i < numImagenes; i++) {
+            if (imagenIndex >= imagenesRandom.length) break;
 
-        const numImágenesColumna = calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv);
-        const imgsEsteDiv = imagenesRandom.slice(index * imgsPorDiv, index * imgsPorDiv + numImágenesColumna);
-
-        // Añadir imágenes con márgenes aleatorios
-        imgsEsteDiv.forEach(imagen => {
             const imgElement = document.createElement('img');
-            imgElement.src = imagen;
-            const subcarpeta = imagen.split('/')[2]; 
-            imgElement.setAttribute('data-tat', subcarpeta);
+            imgElement.src = imagenesRandom[imagenIndex];
+            imagenIndex++; 
 
-            // Márgenes aleatorios entre 10 y 26 rem
-            const margenRandom = 10 + Math.random() * 16; // Margen entre 10 y 26 rem
+            const margenRandom = 10 + Math.random() * 16;
             imgElement.style.marginBottom = `${margenRandom}rem`;
-            imgElement.style.position = `relative`;
+            imgElement.style.position = 'relative';
 
             div.appendChild(imgElement);
-        });
+        }
     });
 
-
-    // Crear animación parallax con GSAP
-    ly1col.forEach(columna => {
+    // animación parallax con GSAP
+    ly1col.forEach((columna) => {
         let velocidad = 1;
+        let margenMin, margenMax;
 
-        // Determinar la velocidad según la clase
         if (columna.classList.contains('mid')) {
             velocidad = 1.3;
+            margenMin = 5; 
+            margenMax = 13;
         } else if (columna.classList.contains('fast')) {
-            velocidad = 1.6; 
+            velocidad = 1.6;
+            margenMin = 3; 
+            margenMax = 13;
         } else {
-            velocidad = 1; 
+            velocidad = 1;
+            margenMin = 18; 
+            margenMax = 26;
         }
 
-        // Configurar efecto parallax
         gsap.to(columna, {
-            y: (index) => {
-            // Obtén la altura total de la columna
-            const alturaColumna = columna.scrollHeight;
-            // Calcular el desplazamiento basado en la velocidad y el tamaño de la columna
-            return alturaColumna * (1 - velocidad); // Este valor ajustará el desplazamiento según la velocidad
-        },
-            ease: "none", // Sin easing para un movimiento constante
+            y: () => {
+                const alturaColumna = columna.scrollHeight || 1; 
+                return alturaColumna * (1 - velocidad);
+            },
+            ease: "none",
             scrollTrigger: {
-                trigger: columna, // Elemento disparador
-                start: "top bottom", // Inicia cuando la parte superior de la columna entra en pantalla
-                end: "bottom top", // Termina cuando la parte inferior de la columna sale de pantalla
-                scrub: true, // Sincroniza el movimiento con el scroll
+                trigger: columna,
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
             },
         });
-    });
 
+        Array.from(columna.children).forEach((imagen) => {
+            const margenRandom = margenMin + Math.random() * (margenMax - margenMin); 
+            imagen.style.marginBottom = `${margenRandom}rem`;
+        });
+    });
 
 
 
