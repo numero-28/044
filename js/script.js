@@ -1,12 +1,18 @@
 $(document).ready(function () {
-      // arrays tatuadores y array de todo
-      const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
-      const rutaBase = "./media/";
+    // arrays tatuadores y array de todo
+    const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
+    const rutaBase = "./media/";
   
-      const arraysTatuadores = tatuadores.map(tatuador => {
+    const arraysTatuadores = tatuadores.map(tatuador => {
         const numImagenes = 10; 
         return Array.from({ length: numImagenes }, (_, i) => `${rutaBase}${tatuador}/imagen${i + 1}.jpg`);
     });
+
+    const tatuadorImagenes = tatuadores.reduce((acc, tatuador, index) => {
+        acc[tatuador] = arraysTatuadores[index];
+        return acc;
+    }, {});
+
 
     const todas = arraysTatuadores.flat();
 
@@ -439,7 +445,7 @@ ly1col.forEach((columna, index) => {
             $('#ly2img').attr('data-tat', imagenesRandom[currentIndex].split('/')[2]);
             $('#infotat').text(imagenesRandom[currentIndex].split('/')[2]);
         }
-        
+
         $('#layout2 > div').css('opacity', '0');
         let tatuadores = $(".tatuador").toArray();
         let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
@@ -578,5 +584,149 @@ ly1col.forEach((columna, index) => {
         }, 800);
     }
     
+
+
+    // LAYOUT 4 
+    $('#layout1 img').click(function() {
+        $('#layout4').css({ opacity: 1, 'pointer-events': 'all' }); 
+        $('#ly1, #ly2, #ly3').hide();
+        $('#close').show();
+
+        const imgClicked = $(this).attr('src');
+        const subcarpeta = imgClicked.split('/')[2]; 
+        
+        const phototatscroll = $('#phototatscroll');
+        phototatscroll.empty(); 
+        
+
+        $('#fotoPrincipal').attr('src', imgClicked);
+
+        tatuadorImagenes[subcarpeta]?.forEach(imagen => {
+            phototatscroll.append(`<img src="${imagen}" alt="${subcarpeta} image">`);
+        });
+
+        const tatuadorSeleccionado = tatuador.find(t => t.baseImagePath.includes(subcarpeta));
+        console.log(tatuadorSeleccionado);
+        
+
+        if (tatuadorSeleccionado) {
+            $('#fotoPrincipal').attr('src', imgClicked); 
+
+            $('#tatuador .tatname').text(tatuadorSeleccionado.name); 
+            $('#tatuador .cities').html(tatuadorSeleccionado.cities); 
+            $('#tatuador .tatstyle').text(tatuadorSeleccionado.style); 
+            $('#openModal').text(`CONTACT WITH ${tatuadorSeleccionado.name.toUpperCase()}`);
+
+            $('#contmodal h2').text(tatuadorSeleccionado.handle); 
+            $('#contmodal p').eq(0).text(tatuadorSeleccionado.email); 
+            $('#contmodal p').eq(1).text(tatuadorSeleccionado.phone);
+            $('#logomodal img').attr('src', tatuadorSeleccionado.logo); 
+
+            const phototatscroll = $('#phototatscroll');
+            phototatscroll.empty();
+
+            for (let i = 1; i <= 10; i++) {
+                phototatscroll.append(`<img src="${tatuadorSeleccionado.baseImagePath}imagen${i}.jpg" alt="Photo ${i}">`);
+            }
+
+            initializePhotoScroll();
+        }
+    })
+
+
+    $('#close').click(function() {
+        
+
+        $('#layout4').css('opacity', '0');
+        $('#layout4').css('pointer-events', 'none');
+        $('#ly1, #ly2, #ly3').show();
+        $('#close').hide();
+    })
+
+
+
+    // galería: se actualiza la imagen grande al hacer scroll
+    function initializePhotoScroll() {
+        const container = $('#phototatscroll'), bigPhoto = $('#fotoPrincipal');
+        const photos = $('#phototatscroll img');
+
+        container.append(photos.clone()).scrollTop(0);
+
+        container.off('scroll').on('scroll', function () {
+            const scrollTop = container.scrollTop(), photoHeight = photos.first().outerHeight();
+            const visibleIndex = Math.floor((scrollTop + container.height() / 2) / photoHeight) % photos.length;
+            bigPhoto.attr('src', photos.eq(visibleIndex).attr('src'));
+
+            if (scrollTop + container.height() >= container[0].scrollHeight) container.scrollTop(0);
+            else if (scrollTop <= -1) container.scrollTop(container[0].scrollHeight - container.height());
+        });
+    }
+
+
+
+    // MODAL 
+
+    const openModal = document.getElementById('openModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeModal = document.getElementById('closeModal');
+    
+
+   // Abrir el modal con efecto de giro
+    openModal.addEventListener('click', () => {
+    modalOverlay.style.display = 'flex'; // Mostrar el modal
+    setTimeout(() => {
+        modalOverlay.classList.add('show'); // Aplicamos la clase 'show' para iniciar la animación
+    }, 50); // Le damos un pequeño retraso para asegurar que el modal se muestra antes de que empiece la animación
+    });
+  
+  // Cerrar el modal
+    closeModal.addEventListener('click', () => {
+    modalOverlay.classList.remove('show'); // Remover la clase 'show' para el efecto de cierre
+    setTimeout(() => {
+        modalOverlay.style.display = 'none'; // Ocultar el modal después de la animación
+    }, 600); // Esperamos que termine la animación antes de esconder el modal
+    });
+  
+  // Cerrar el modal al hacer clic fuera de él
+    modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('show'); // Remover la clase 'show' para el efecto de cierre
+        setTimeout(() => {
+            modalOverlay.style.display = 'none'; // Ocultar el modal después de la animación
+        }, 600); // Esperamos que termine la animación antes de esconder el modal
+     }
+    });
+  
+  // arrays info 
+  const tatuador = [
+    {
+      id: "acid.ambar", name: "ACID AMBAR", cities: "CURRENTLY : <br>MADRID [ 09/01/25 - 27/03/25 ]  <br> SOON : <br>VALENCIA [ 01/04/25 - 07/04/25 ]", style: "[ STYLE ] NEW TRIBAL", handle: "@acid.ambar", email: "acid.ambar.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/acid.ambar/", logo: "media/044logo.svg"
+    },
+    {
+      id: "nando.diablo_", name: "NANDO DIABLO", cities: "CURRENTLY : <br>MADRID [ TILL 27/04/25 ]  <br> SOON : <br> PARIS BERLIN LONDON AMSTERDAM SWITZERLAND NY LA MEXICO", style: "[ STYLE ] NEW TRIBAL / BLACKWORK", handle: "@nando.diablo_", email: "nando.diablo.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nando.diablo_/", logo: "media/044logo.svg"
+    },
+    {
+      id: "infrababy", name: "INFRABABY", cities: "CURRENTLY : <br>MADRID [ TILL 22/05/25 ]  <br> SOON : <br>LONDON", style: "[ STYLE ] TYPOGRAPHY / SURREALISM", handle: "@infrababy", email: "infrababy.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/infrababy/", logo: "media/044logo.svg"
+    },
+    {
+      id: "nona.tatt", name: "NONA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] TRADITIONAL / ART NOUVEAU", handle: "@nona.tatt", email: "nona.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/nona.tatt/", logo: "media/044logo.svg"
+    },
+    {
+      id: "santagemzz", name: "SANTA GEMZZ", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> BARCELONA", style: "[ STYLE ] TOOTH GEMS", handle: "@santagemzzz", email: "santagemzzz.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/santagemzz/", logo: "media/044logo.svg"
+    },
+    {
+      id: "zepa.ttt", name: "ZEPA", cities: "CURRENTLY : <br>MADRID <br> SOON : <br> NY [15/01/25 - 22/01/25]", style: "[ STYLE ] FINE LINE / LETTERING / TRADITIONAL", handle: "@zepa.ttt", email: "zepa.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/zepa.ttt/", logo: "media/044logo.svg"
+    },
+    {
+      id: "alex.a.aramburu", name: "ALEX ARAMBURU", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] ABSTRACT / LINE", handle: "@alex.a.aramburu", email: "aramburu.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/alex.a.aramburu/", logo: "media/044logo.svg"
+    },
+    {
+      id: "elvirambarbara", name: "ELVIRA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] FINE LINE / REALISM", handle: "@elvirambarbara", email: "elvira.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/elvirambarbara/", logo: "media/044logo.svg"
+    },
+    {
+      id: "galgocanalla", name: "GALGO CANALLA", cities: "CURRENTLY : <br>MADRID", style: "[ STYLE ] NEO TRIBAL / ORNAMENTAL", handle: "@galgo.canalla", email: "galgo.canalla.tattoo@gmail.com", phone: "+34 652 768 567", baseImagePath: "media/galgocanalla/", logo: "media/044logo.svg"
+    }
+  ];
+  
 
 });
