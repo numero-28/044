@@ -151,6 +151,7 @@ img {
     overflow: hidden;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 #layout2 {
     cursor: url(../media/next.png), auto;
@@ -516,6 +517,18 @@ img {
         top: 50%;
         row-gap: 3rem;
         transform: translate(0, -50%);
+    }
+
+    #info-imgs {
+        row-gap: 7rem;
+        width: 75%;
+    }
+    #info-imgs .line {
+        flex-direction: column;
+        row-gap: 7rem;
+    }
+    .uno, .tres {
+        align-self: end;
     }
 
     #openModal {

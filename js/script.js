@@ -321,11 +321,23 @@ $(document).ready(function () {
 
             setTimeout(() => {
                 let scaleFactor = viewportWidth / chosenimgRect.width;
+                let scaleFactorPh = (viewportHeight / chosenimgRect.height);
 
-                chosenimg.css({
-                    transition: "transform 0.8s ease",
-                    transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})` 
-                });
+                if (viewportHeight<viewportWidth) {
+                    chosenimg.css({
+                        transition: "transform 0.8s ease",
+                        transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})` 
+                    });
+                } else {
+                    $('#ly2img').css({
+                        "height": "100%",
+                        "width": "auto"
+                    })
+                    chosenimg.css({
+                        transition: "transform 0.8s ease",
+                        transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactorPh})` 
+                    });
+                }
             }, 600); 
         }, 1400);
 
@@ -636,12 +648,16 @@ $(document).ready(function () {
         
         $('#fotoPrincipal').attr('src', imgClicked);
 
-        tatuadorImagenes[subc]?.forEach(imagen => {
-            phototatscroll.append(`<img src="${imagen}" alt="${subc} image">`);
-        });
+        const images = tatuadorImagenes[subc] || [];
 
-        const tatuadorSeleccionado = infoTat.find(t => t.baseImagePath.includes(subc));
-        console.log(tatuadorSeleccionado);
+        // Ordenar las imágenes, colocando la imagen clickeada en la primera posición
+        const imgClickedName = imgClicked.split('/').pop();
+        const orderedImages = [imgClickedName, ...images.filter(img => img !== imgClickedName)];
+        
+        // Agregar las imágenes ordenadas a phototatscroll
+        orderedImages.forEach(imagen => {
+            phototatscroll.append(`<img src="media/${subc}/${imagen}" alt="${subc} image">`);
+        });
         
         if (tatuadorSeleccionado) {
             $('#fotoPrincipal').attr('src', imgClicked); 
