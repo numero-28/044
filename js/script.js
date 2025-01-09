@@ -10,25 +10,18 @@ $(document).ready(function () {
 
     let isMouseFollowActive = true;
 
-    // Función para seguir el ratón
     function followMouse(e) {
-        if (!isMouseFollowActive) return; // Si el seguimiento está desactivado, no hacer nada
+        if (!isMouseFollowActive) return; 
     
-        const mouse = getMouse(e);  // Obtener la posición del ratón
+        const mouse = getMouse(e);  
         const modelViewer = document.querySelector("#myModel");
     
-        // Calcular los ángulos según la posición del ratón
-        const horizontalAngle = -((mouse[0] / window.innerWidth) - 0.5) * 90;  // Ángulo horizontal (-45 a 45)
-        const verticalAngle = ((mouse[1] / window.innerHeight) * 180) - 90;  // Ángulo vertical (-90 a 90)
-    
-        // Aseguramos que los ángulos estén dentro de los rangos válidos para evitar problemas con la cámara
-        const clampedVerticalAngle = Math.max(89, Math.min(-89, verticalAngle));  // Limitar la rotación vertical entre -89 y 89 grados
-    
-        // Actualizar la cámara para que siga la posición del ratón
+        const horizontalAngle = -((mouse[0] / window.innerWidth) - 0.5) * 90;  
+        const verticalAngle = ((mouse[1] / window.innerHeight) * 180) - 90;  
+        const clampedVerticalAngle = Math.max(89, Math.min(-89, verticalAngle));  
         modelViewer.cameraOrbit = `${horizontalAngle}deg ${clampedVerticalAngle}deg 70%`;
     }
     
-    // Llamar a la función onmousemove
     document.onmousemove = function(e) {
         followMouse(e);
     };
@@ -41,7 +34,6 @@ $(document).ready(function () {
         isMouseFollowActive = false;
     
         document.querySelector("#landing").classList.add("hidden");
-        document.querySelector("#layout1").style.display = "flex";  
         document.querySelector("#menu").style.display = "flex";  
         document.querySelector("#info-imgs").style.display = "flex";  
 
@@ -84,7 +76,11 @@ $(document).ready(function () {
     }
     const imagenesRandom = shuffle([...todas]);
 
+    // MENÚ
 
+    $("#ig-bt").on("click", function () {
+        window.open('https://www.instagram.com/044atelier/', '_blank');
+    });
 
     // PARA LAYOUT 1
     if ($(window).width() >= 992) {
@@ -260,22 +256,26 @@ $(document).ready(function () {
 
     $('.tatuador').hover(
         function () {
-            $('#ly3img').css('opacity', '1')
-            $("#layout2").hide();
-            $("#layout2 > div").css({
-                "width": "",
-                "margin-left": "",
-                "margin-right": ""
-            });
-            currentTatuador = $(this).data('tat');
-            const index = indices[currentTatuador];
-            const imagen = `${rutaBase}${currentTatuador}/imagen${index + 1}.jpg`; 
-            $('#ly3img').attr('src', imagen).show();
+            if ($(window).width() > 992) {
+                $('#ly3img').css('opacity', '1')
+                $("#layout2").hide();
+                $("#layout2 > div").css({
+                    "width": "",
+                    "margin-left": "",
+                    "margin-right": ""
+                });
+                currentTatuador = $(this).data('tat');
+                const index = indices[currentTatuador];
+                const imagen = `${rutaBase}${currentTatuador}/imagen${index + 1}.jpg`; 
+                $('#ly3img').attr('src', imagen).show();
+            }
         },
         function () {
-            const index = indices[currentTatuador];
-            indices[currentTatuador] = (index + 1) % numImagenes; 
-            $('#ly3img').hide(); 
+            if ($(window).width() > 992) {
+                const index = indices[currentTatuador];
+                indices[currentTatuador] = (index + 1) % numImagenes; 
+                $('#ly3img').hide(); 
+            }
         }
     );
 
@@ -497,33 +497,59 @@ $(document).ready(function () {
 
     // LAYOUT 2 a LAYOUT 3
     function ly2ToLy3() {
-
-        const infodivs = $(".infodivs").toArray();
-        infodivs.forEach((div, index) => {
-            setTimeout(() => {
-                $(div).animate({ opacity: 0 }, 200);
-            }, index * 200);
-        });
-
-        setTimeout(() => {
-            $("#layout2 > div").css({
-                "width": "20%",
-                "transition": "width 0.8s ease",
-                "margin-left": "auto",
-                "margin-right": "auto",
-            });
-        }, 1200);
-
-        setTimeout(() => {
-            $('#layout3').show();
-            let tatuadores = $(".tatuador").toArray();
-            let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
-            shuffledTats.forEach((div, index) => {
+        if ($(window).width() > 992) {  
+            const infodivs = $(".infodivs").toArray();
+            infodivs.forEach((div, index) => {
                 setTimeout(() => {
-                    $(div).animate({ opacity: 1 }, 200);
+                    $(div).animate({ opacity: 0 }, 200);
                 }, index * 200);
             });
-        }, 2000);
+
+            setTimeout(() => {
+                $("#layout2 > div").css({
+                    "width": "20%",
+                    "transition": "width 0.8s ease",
+                    "margin-left": "auto",
+                    "margin-right": "auto",
+                });
+            }, 1200);
+
+            setTimeout(() => {
+                $('#layout3').show();
+                let tatuadores = $(".tatuador").toArray();
+                let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+                shuffledTats.forEach((div, index) => {
+                    setTimeout(() => {
+                        $(div).animate({ opacity: 1 }, 200);
+                    }, index * 200);
+                });
+            }, 2000);
+        } else {
+            const infodivs = $(".infodivs").toArray();
+            infodivs.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 0 }, 200);
+                }, index * 200);
+            });
+
+            setTimeout(() => {
+                $("#layout2 > div").css({
+                    "transition": "opacity 0.8s ease",
+                    "opacity": "0",
+                });
+            }, 1200);
+
+            setTimeout(() => {
+                $('#layout3').show();
+                let tatuadores = $(".tatuador").toArray();
+                let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+                shuffledTats.forEach((div, index) => {
+                    setTimeout(() => {
+                        $(div).animate({ opacity: 1 }, 200);
+                    }, index * 200);
+                });
+            }, 2000);
+        }
     }
 
 
