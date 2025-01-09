@@ -146,49 +146,79 @@ $(document).ready(function () {
     // LAYOUT 2
 
     let currentIndex = 0;
-    $('#ly2img').on('click', function(e) {
-        const imageWidth = $(this).width();
-        const clickPosition = e.pageX - $(this).offset().left;
+    const infodivs = $('.infodivs').toArray();
+    const newOrder = [...infodivs];
+    if ($(window).width() >= 992) {
+        $('#ly2img').on('click', function(e) {
+            const imageWidth = $(this).width();
+            const clickPosition = e.pageX - $(this).offset().left;
 
-        const infodivs = $('.infodivs').toArray();
-        const newOrder = [...infodivs];
+            if (clickPosition < imageWidth * 0.3) {
+                currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
+            } else if (clickPosition > imageWidth * 0.7) {
+                currentIndex = (currentIndex + 1) % imagenesRandom.length;
+            } else {
+                const imgClicked = $(this).attr('src');
+                showLy4(imgClicked);
+            }
 
-        
-        if (clickPosition < imageWidth * 0.3) {
+            do {
+                newOrder.sort(() => Math.random() - 0.5);
+            } while (newOrder.some((div, index) => div === infodivs[index]));
+
+            newOrder.forEach(div => $(div).parent().append(div));
+            const nuevaImagen = imagenesRandom[currentIndex];
+            const subcarpeta = nuevaImagen.split('/')[2]; 
+
+            $(this).attr('src', nuevaImagen);
+            $(this).attr('data-tat', subcarpeta);
+
+            $('#infotat').text(subcarpeta);
+        });
+        $(document).mousemove(function(event) {
+            var anchoPantalla = $(window).width();
+            var posicionX = event.pageX;
+    
+            if (posicionX < anchoPantalla * 0.3) {
+                $('#layout2').css('cursor', 'url(media/prev.png), auto');
+            } else if (posicionX >= anchoPantalla * 0.3 && posicionX <= anchoPantalla * 0.7) {
+                $('#layout2').css('cursor', 'url(media/more.png), auto');
+            } else {
+                $('#layout2').css('cursor', 'url(media/next.png), auto');
+            }
+        });
+    } else {
+        $('#prev').click(function() {
             currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
-        } else if (clickPosition > imageWidth * 0.7) {
+            update2ph();
+        });
+        $('#next').click(function() {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
-        } else {
+            update2ph();
+
+        });
+        $('#ly2img').click(function() {
             const imgClicked = $(this).attr('src');
             showLy4(imgClicked);
-        }
-
+        });
         do {
             newOrder.sort(() => Math.random() - 0.5);
         } while (newOrder.some((div, index) => div === infodivs[index]));
         
         newOrder.forEach(div => $(div).parent().append(div));
-        const nuevaImagen = imagenesRandom[currentIndex];
-        const subcarpeta = nuevaImagen.split('/')[2]; 
 
-        $(this).attr('src', nuevaImagen);
-        $(this).attr('data-tat', subcarpeta);
-
-        $('#infotat').text(subcarpeta);
-    });
-
-    $(document).mousemove(function(event) {
-        var anchoPantalla = $(window).width();
-        var posicionX = event.pageX;
-
-        if (posicionX < anchoPantalla * 0.3) {
-            $('#layout2').css('cursor', 'url(media/prev.png), auto');
-        } else if (posicionX >= anchoPantalla * 0.3 && posicionX <= anchoPantalla * 0.7) {
-            $('#layout2').css('cursor', 'url(media/more.png), auto');
-        } else {
-            $('#layout2').css('cursor', 'url(media/next.png), auto');
+        function update2ph() {
+            const nuevaImagen = imagenesRandom[currentIndex];
+            const subcarpeta = nuevaImagen.split('/')[2];
+        
+            $('#ly2img').attr('src', nuevaImagen);
+            $('#ly2img').attr('data-tat', subcarpeta);
+        
+            $('#infotat').text(subcarpeta);
         }
-    });
+    }
+
+    
 
 
 
@@ -370,6 +400,15 @@ $(document).ready(function () {
                 $('body').css('overflow', '');
             }, 500);
         }, 2900);
+
+        setTimeout(() => {
+            const pn = $(".pn").toArray();
+            pn.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 300);
+            });        
+        }, 4500);
     }    
 
 
@@ -507,6 +546,15 @@ $(document).ready(function () {
                 }, index * 300);
             });        
         }, 3000);
+
+        setTimeout(() => {
+            const pn = $(".pn").toArray();
+            pn.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 1 }, 200);
+                }, index * 300);
+            });        
+        }, 4000);
     }
 
 
