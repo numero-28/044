@@ -7,22 +7,54 @@ $(document).ready(function () {
             e.clientY  // Coordenada Y del ratón
         ]
     }
+
+    let isMouseFollowActive = true;
+
+    // Función para seguir el ratón
+    function followMouse(e) {
+        if (!isMouseFollowActive) return; // Si el seguimiento está desactivado, no hacer nada
     
-    document.onmousemove = function(e) {
         const mouse = getMouse(e);  // Obtener la posición del ratón
         const modelViewer = document.querySelector("#myModel");
     
         // Calcular los ángulos según la posición del ratón
-        // Ajustamos los ángulos para que no haya límites rígidos y haya un rango más natural.
-        const horizontalAngle = (mouse[0] / window.innerWidth) * 270;  // Ángulo horizontal (0 a 360)
+        const horizontalAngle = -((mouse[0] / window.innerWidth) - 0.5) * 90;  // Ángulo horizontal (-45 a 45)
         const verticalAngle = ((mouse[1] / window.innerHeight) * 180) - 90;  // Ángulo vertical (-90 a 90)
     
         // Aseguramos que los ángulos estén dentro de los rangos válidos para evitar problemas con la cámara
-        const clampedVerticalAngle = Math.max(-120, Math.min(-100, verticalAngle));  // Limitar la rotación vertical entre -89 y 89 grados
-        
+        const clampedVerticalAngle = Math.max(89, Math.min(-89, verticalAngle));  // Limitar la rotación vertical entre -89 y 89 grados
+    
         // Actualizar la cámara para que siga la posición del ratón
-        modelViewer.cameraOrbit = `${horizontalAngle}deg ${clampedVerticalAngle}deg 110%`;
+        modelViewer.cameraOrbit = `${horizontalAngle}deg ${clampedVerticalAngle}deg 70%`;
+    }
+    
+    // Llamar a la función onmousemove
+    document.onmousemove = function(e) {
+        followMouse(e);
     };
+
+    document.querySelector("#landing").addEventListener("click", function() {
+        const modelViewer = document.querySelector("#myModel");
+    
+        modelViewer.cameraOrbit = "0deg 89deg 70%"; 
+        
+        isMouseFollowActive = false;
+    
+        document.querySelector("#landing").classList.add("hidden");
+        document.querySelector("#layout1").style.display = "flex";  
+        document.querySelector("#menu").style.display = "flex";  
+        document.querySelector("#info-imgs").style.display = "flex";  
+
+        setTimeout(function() {
+            document.querySelector("#landing").style.display = "none";  
+        }, 1000);  
+        setTimeout(function() {
+            document.querySelector("#layout1").classList.remove("hidden");
+            document.querySelector("#menu").classList.remove("hidden");
+            document.querySelector("#info-imgs").classList.remove("hidden");
+        }, 500);  
+    });
+    
 
 
     // arrays tatuadores y array de todo

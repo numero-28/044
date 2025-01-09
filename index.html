@@ -13,10 +13,10 @@
 
     <body>
         <div id="landing">
-            <model-viewer id="myModel" src="media/3d/044logo.gltf" shadow-intensity="0" shadow-softness="0" camera-target="0m 0m -0.07m" exposure="0.3" min-field-of-view="22.98deg" disable-zoom camera-orbit="0deg 15deg 110%">
+            <model-viewer id="myModel" src="media/3d/044logo.gltf" shadow-intensity="0" shadow-softness="0" camera-target="0m 0m -0.07m" exposure="0.3" disable-zoom     camera-orbit="0deg 15deg 5%">
             </model-viewer>
         </div>
-        <div id="menu">
+        <div id="menu" class="hidden">
             <div id="logo" class="col-2">
                 <img src="media/044logo.svg">
             </div>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div id="info-imgs">
+        <div id="info-imgs" class="hidden">
             <div class="line col-12">
                 <div class="uno infodivs" id="infotat"></div>
                 <div class="dos infodivs">BY APPOINTMENT ONLY</div>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div id="layout1" class="row">
+        <div id="layout1" class="hidden row">
             <div class="col"></div>
             <div class="col-2 ly1col fast"></div>
             <div class="col-2 ly1col mid"></div>
