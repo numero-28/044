@@ -454,7 +454,6 @@ img {
     bottom: 0;
     z-index: 900; 
     opacity: 1; 
-    transform: translate(7%, 0%);
     transition: opacity 0.7s ease-out; 
 }
 
@@ -547,6 +546,9 @@ img {
 
     #contmodal {
         width: 45%;
+    }
+    .modal-overlay.show #contmodal {
+        transform: rotateY(0deg) translate(-25%, 0);
     }
     #openModal {
         background-color: transparent;
