@@ -647,33 +647,39 @@ $(document).ready(function () {
         phototatscroll.empty(); 
         
         $('#fotoPrincipal').attr('src', imgClicked);
-
-        tatuadorImagenes[subc]?.forEach(imagen => {
+        
+        tatuadorImagenes[subc]?.filter(imagen => imagen !== imgClicked).forEach(imagen => {
             phototatscroll.append(`<img src="${imagen}" alt="${subc} image">`);
         });
-
+        
         const tatuadorSeleccionado = infoTat.find(t => t.baseImagePath.includes(subc));
-        console.log(tatuadorSeleccionado);
         
         if (tatuadorSeleccionado) {
             $('#fotoPrincipal').attr('src', imgClicked); 
-
+            
             $('#tatuador .tatname').text(tatuadorSeleccionado.name); 
             $('#tatuador .cities').html(tatuadorSeleccionado.cities); 
             $('#tatuador .tatstyle').text(tatuadorSeleccionado.style); 
             $('#openModal').text(`CONTACT WITH ${tatuadorSeleccionado.name.toUpperCase()}`);
-
+            
             $('#contmodal h2').text(tatuadorSeleccionado.handle); 
             $('#contmodal p').eq(0).text(tatuadorSeleccionado.email); 
             $('#contmodal p').eq(1).text(tatuadorSeleccionado.phone);
             $('#logomodal img').attr('src', tatuadorSeleccionado.logo); 
-
+            
             const phototatscroll = $('#phototatscroll');
             phototatscroll.empty();
-
+            
+            phototatscroll.append(`<img src="${imgClicked}" alt="${subc} image">`);
             for (let i = 1; i <= 10; i++) {
-                phototatscroll.append(`<img src="${tatuadorSeleccionado.baseImagePath}imagen${i}.jpg" alt="Photo ${i}">`);
+                const imagenPath = `./${tatuadorSeleccionado.baseImagePath}imagen${i}.jpg`;
+                console.log(imagenPath);
+                console.log(imgClicked);
+                if (imagenPath !== imgClicked) { // Filtrar imgClicked
+                    phototatscroll.append(`<img src="${imagenPath}" alt="Photo ${i}">`);
+                }
             }
+    
 
             initializePhotoScroll();
         }
