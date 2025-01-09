@@ -184,7 +184,7 @@ $(document).ready(function () {
         if (posicionX < anchoPantalla * 0.3) {
             $('#layout2').css('cursor', 'url(media/prev.png), auto');
         } else if (posicionX >= anchoPantalla * 0.3 && posicionX <= anchoPantalla * 0.7) {
-            $('#layout2').css('cursor', 'url(media/ink.png), auto');
+            $('#layout2').css('cursor', 'url(media/more.png), auto');
         } else {
             $('#layout2').css('cursor', 'url(media/next.png), auto');
         }
@@ -648,16 +648,12 @@ $(document).ready(function () {
         
         $('#fotoPrincipal').attr('src', imgClicked);
 
-        const images = tatuadorImagenes[subc] || [];
-
-        // Ordenar las imágenes, colocando la imagen clickeada en la primera posición
-        const imgClickedName = imgClicked.split('/').pop();
-        const orderedImages = [imgClickedName, ...images.filter(img => img !== imgClickedName)];
-        
-        // Agregar las imágenes ordenadas a phototatscroll
-        orderedImages.forEach(imagen => {
-            phototatscroll.append(`<img src="media/${subc}/${imagen}" alt="${subc} image">`);
+        tatuadorImagenes[subc]?.forEach(imagen => {
+            phototatscroll.append(`<img src="${imagen}" alt="${subc} image">`);
         });
+
+        const tatuadorSeleccionado = infoTat.find(t => t.baseImagePath.includes(subc));
+        console.log(tatuadorSeleccionado);
         
         if (tatuadorSeleccionado) {
             $('#fotoPrincipal').attr('src', imgClicked); 
