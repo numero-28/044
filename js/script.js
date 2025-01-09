@@ -73,6 +73,7 @@ $(document).ready(function () {
 
 
     const todas = arraysTatuadores.flat();
+    
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -86,98 +87,117 @@ $(document).ready(function () {
 
 
     // PARA LAYOUT 1
+    if ($(window).width() >= 992) {
+        gsap.registerPlugin(ScrollTrigger);
+        const ly1col = document.querySelectorAll('.ly1col');
+        const distribucion = {
+            fast: 22,
+            mid: 18,
+            slow: 10
+        };
+        let imagenIndex = 0; 
+        ly1col.forEach(div => {
+            const clase = div.classList.contains('fast') ? 'fast' : 
+                div.classList.contains('mid') ? 'mid' : 
+                'slow';
+            const numImagenes = distribucion[clase];
 
-    gsap.registerPlugin(ScrollTrigger);
-    const ly1col = document.querySelectorAll('.ly1col');
-    const numDivs = ly1col.length;
-    const imgsPorDiv = Math.ceil(imagenesRandom.length / numDivs); // Distribuir las imágenes en columnas
+            for (let i = 0; i < numImagenes; i++) {
+                if (imagenIndex >= imagenesRandom.length) break;
 
-    // Calcular la cantidad de imágenes necesarias para cada columna basada en su velocidad
-    function calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv) {
-        return Math.ceil(imgsPorDiv * (1 / velocidad)); // Menos imágenes para las columnas lentas
-    }
+                const imgElement = document.createElement('img');
+                imgElement.src = imagenesRandom[imagenIndex];
+                imagenIndex++; 
 
-    // Distribuir imágenes y asignarles márgenes aleatorios
-    ly1col.forEach((div, index) => {
-        const velocidad = (div.classList.contains('fast')) ? 1.6 : 
-                        (div.classList.contains('mid')) ? 1.3 : 1; // Ajustamos la velocidad según la clase
+                const margenRandom = 10 + Math.random() * 16;
+                imgElement.style.marginBottom = `${margenRandom}rem`;
+                imgElement.style.position = 'relative';
 
-        const numImágenesColumna = calcularNumeroDeImagenesPorColumna(velocidad, imgsPorDiv);
-        const imgsEsteDiv = imagenesRandom.slice(index * imgsPorDiv, index * imgsPorDiv + numImágenesColumna);
-
-        // Añadir imágenes con márgenes aleatorios
-        imgsEsteDiv.forEach(imagen => {
-            const imgElement = document.createElement('img');
-            imgElement.src = imagen;
-            const subcarpeta = imagen.split('/')[2]; 
-            imgElement.setAttribute('data-tat', subcarpeta);
-
-            // Márgenes aleatorios entre 10 y 26 rem
-            const margenRandom = 10 + Math.random() * 16; // Margen entre 10 y 26 rem
-            imgElement.style.marginBottom = `${margenRandom}rem`;
-            imgElement.style.position = `relative`;
-
-            div.appendChild(imgElement);
+                div.appendChild(imgElement);
+            }
         });
-    });
 
 
-    // Crear animación parallax con GSAP
-    ly1col.forEach(columna => {
-        let velocidad = 1;
+        // animación parallax con GSAP
+        ly1col.forEach((columna) => {
+            let velocidad = 1;
+            let margenMin, margenMax;
 
-        // Determinar la velocidad según la clase
-        if (columna.classList.contains('mid')) {
-            velocidad = 1.3;
-        } else if (columna.classList.contains('fast')) {
-            velocidad = 1.6; 
-        } else {
-            velocidad = 1; 
+            if (columna.classList.contains('mid')) {
+                velocidad = 1.3;
+                margenMin = 5; 
+                margenMax = 13;
+            } else if (columna.classList.contains('fast')) {
+                velocidad = 1.6;
+                margenMin = 3; 
+                margenMax = 13;
+            } else {
+                velocidad = 1;
+                margenMin = 18; 
+                margenMax = 26;
+            }
+
+            gsap.to(columna, {
+                y: () => {
+                    const alturaColumna = columna.scrollHeight || 1; 
+                    return alturaColumna * (1 - velocidad);
+                },
+                ease: "none",
+                scrollTrigger: {
+                    trigger: columna,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+
+            Array.from(columna.children).forEach((imagen) => {
+                const margenRandom = margenMin + Math.random() * (margenMax - margenMin); 
+                imagen.style.marginBottom = `${margenRandom}rem`;
+            });
+        });
+
+
+
+        $('#layout1 .ly1col img').on('mouseenter', function() {
+            $('.infodivs').css('opacity', '1'); 
+            const subcarpeta = $(this).attr('data-tat');    
+            $('#infotat').text(subcarpeta);
+            
+            const infodivs = $('.infodivs').toArray();
+            const newOrder = [...infodivs];
+            do {
+                newOrder.sort(() => Math.random() - 0.5);
+            } while (newOrder.some((div, index) => div === infodivs[index]));
+            newOrder.forEach(div => $(div).parent().append(div));
+        });
+
+        $('#layout1 .ly1col img').on('mouseleave', function() {
+            $('.infodivs').css('opacity', '0');
+        });
+    } else {        
+        $('#layout1 div.hide').hide();
+        $('#layout1').css('height', 'auto');
+        const ly1ph = document.querySelectorAll('.ly1ph');
+        const numImagenes = imagenesRandom.length;
+        const mitad = Math.ceil(numImagenes / 2);
+        const primeraMitad = imagenesRandom.slice(0, mitad);
+        const segundaMitad = imagenesRandom.slice(mitad);
+        function agregarImagenes(div, imagenes) {
+            imagenes.forEach(imagen => {
+                const imgElement = document.createElement('img');
+                imgElement.src = imagen;
+
+                const margenRandom = 2 + Math.random() * 30; 
+                imgElement.style.marginBottom = `${margenRandom}rem`;
+
+                div.appendChild(imgElement);
+            });
         }
 
-        // Configurar efecto parallax
-        gsap.to(columna, {
-            y: (index) => {
-            // Obtén la altura total de la columna
-            const alturaColumna = columna.scrollHeight;
-            // Calcular el desplazamiento basado en la velocidad y el tamaño de la columna
-            return alturaColumna * (1 - velocidad); // Este valor ajustará el desplazamiento según la velocidad
-        },
-            ease: "none", // Sin easing para un movimiento constante
-            scrollTrigger: {
-                trigger: columna, // Elemento disparador
-                start: "top bottom", // Inicia cuando la parte superior de la columna entra en pantalla
-                end: "bottom top", // Termina cuando la parte inferior de la columna sale de pantalla
-                scrub: true, // Sincroniza el movimiento con el scroll
-            },
-        });
-        const ly1col = document.querySelectorAll('.ly1col');
-
-// Registrar en la consola la altura de cada elemento
-ly1col.forEach((columna, index) => {
-    console.log(`Altura de ly1col[${index}]: ${columna.scrollHeight}px`);
-});
-    });
-
-
-
-
-    $('#layout1 .ly1col img').on('mouseenter', function() {
-        $('.infodivs').css('opacity', '1'); 
-        const subcarpeta = $(this).attr('data-tat');    
-        $('#infotat').text(subcarpeta);
-        
-        const infodivs = $('.infodivs').toArray();
-        const newOrder = [...infodivs];
-        do {
-            newOrder.sort(() => Math.random() - 0.5);
-        } while (newOrder.some((div, index) => div === infodivs[index]));
-        newOrder.forEach(div => $(div).parent().append(div));
-    });
-
-    $('#layout1 .ly1col img').on('mouseleave', function() {
-        $('.infodivs').css('opacity', '0');
-    });
+        agregarImagenes(ly1ph[0], primeraMitad);
+        agregarImagenes(ly1ph[1], segundaMitad);
+    }
 
     
 
@@ -197,7 +217,8 @@ ly1col.forEach((columna, index) => {
         } else if (clickPosition > imageWidth * 0.7) {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
         } else {
-            return;
+            const imgClicked = $(this).attr('src');
+            showLy4(imgClicked);
         }
 
         do {
@@ -358,11 +379,23 @@ ly1col.forEach((columna, index) => {
 
             setTimeout(() => {
                 let scaleFactor = viewportWidth / chosenimgRect.width;
+                let scaleFactorPh = (viewportHeight / chosenimgRect.height);
 
-                chosenimg.css({
-                    transition: "transform 0.8s ease",
-                    transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})` 
-                });
+                if (viewportHeight<viewportWidth) {
+                    chosenimg.css({
+                        transition: "transform 0.8s ease",
+                        transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})` 
+                    });
+                } else {
+                    $('#ly2img').css({
+                        "height": "100%",
+                        "width": "auto"
+                    })
+                    chosenimg.css({
+                        transition: "transform 0.8s ease",
+                        transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactorPh})` 
+                    });
+                }
             }, 600); 
         }, 1400);
 
@@ -646,11 +679,26 @@ ly1col.forEach((columna, index) => {
 
     // LAYOUT 4 
     $('#layout1 img').click(function() {
+        const imgClicked = $(this).attr('src');
+        showLy4(imgClicked);
+    });
+
+    function showLy4(imgClicked) {
         $('#layout4').css({ opacity: 1, 'pointer-events': 'all' }); 
-        $('#ly1, #ly2, #ly3').hide();
+        $('#ly1, #ly2, #ly3, #life-bt, #us-bt').hide();
         $('#close').show();
 
-        const imgClicked = $(this).attr('src');
+        if ($(window).width() <= 992) {
+        $('#lychg').css({
+                "flex-direction": "row",
+                "top": "auto",
+                "transform": "translate(-50%, -50%)",
+                "left": "50%",
+                "padding-top": "1.5rem"
+
+            });
+        }
+        
         const subc = imgClicked.split('/')[2]; 
         
         const phototatscroll = $('#phototatscroll');
@@ -658,12 +706,16 @@ ly1col.forEach((columna, index) => {
         
         $('#fotoPrincipal').attr('src', imgClicked);
 
-        tatuadorImagenes[subc]?.forEach(imagen => {
-            phototatscroll.append(`<img src="${imagen}" alt="${subc} image">`);
-        });
+        const images = tatuadorImagenes[subc] || [];
 
-        const tatuadorSeleccionado = infoTat.find(t => t.baseImagePath.includes(subc));
-        console.log(tatuadorSeleccionado);
+        // Ordenar las imágenes, colocando la imagen clickeada en la primera posición
+        const imgClickedName = imgClicked.split('/').pop();
+        const orderedImages = [imgClickedName, ...images.filter(img => img !== imgClickedName)];
+        
+        // Agregar las imágenes ordenadas a phototatscroll
+        orderedImages.forEach(imagen => {
+            phototatscroll.append(`<img src="media/${subc}/${imagen}" alt="${subc} image">`);
+        });
         
         if (tatuadorSeleccionado) {
             $('#fotoPrincipal').attr('src', imgClicked); 
@@ -687,14 +739,29 @@ ly1col.forEach((columna, index) => {
 
             initializePhotoScroll();
         }
-    });
+    }
 
+    $('#layout3 .tatuador').click(function () {
+        const imgClicked = $('#ly3img').attr('src'); 
+        showLy4(imgClicked); 
+    });
 
     $('#close').click(function() {
         $('#layout4').css('opacity', '0');
         $('#layout4').css('pointer-events', 'none');
-        $('#ly1, #ly2, #ly3').show();
+        $('#ly1, #ly2, #ly3, #life-bt, #us-bt').show();
         $('#close').hide();
+
+        if ($(window).width() <= 992) {
+        $('#lychg').css({
+                "flex-direction": "",
+                "top": "",
+                "transform": "",
+                "left": "auto",
+                "padding-top": "auto"
+
+            });
+        }
     });
 
 

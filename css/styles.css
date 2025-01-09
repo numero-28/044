@@ -137,6 +137,7 @@ img {
     display: none;
     opacity: 1;
     transition: opacity 1s ease-in; 
+    height: 5700px;
 }
 #layout1 > div {
     display: flex;
@@ -159,6 +160,12 @@ img {
     margin: 0;
     cursor: pointer;
 }
+.ly1col img:last-child {
+    margin-bottom: 0!important;
+}
+.ly1col img:last-child {
+    margin-bottom: 0!important;
+}
 #infotat {
     text-transform: uppercase;
 }
@@ -180,6 +187,7 @@ img {
     overflow: hidden;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 #layout2 {
     cursor: url(../media/next.png), auto;
@@ -398,7 +406,7 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 90%;
 }
 #tatuador div {
     font-family: var(--helve-bd);
@@ -419,6 +427,11 @@ img {
 }
 #phototatscroll img {
     margin-top: 0.5rem;
+}
+
+.tatname , .tatstyle{
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 /* IMÁGENES GRANDES */
@@ -447,15 +460,16 @@ img {
 
 
 #contmodal {
-    background: #585858;
+    /* background: #585858; */
     padding-top: 3rem;
     padding-bottom: 3rem;
     padding-right: 1rem;
     padding-left: 2rem;
 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 30vw;
-    height: 35vh;
+    
+    /* width: calc(30vw);
+    height: calc(35vh); */
+ 
     position: relative;
     transform-style: preserve-3d; 
     perspective: 1000px; 
@@ -468,7 +482,11 @@ img {
 }
 
 #logomodal {
+    display: flex; /* Flexbox para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
     position: absolute;
+    width: 200%; 
     top: 0;
     left: 0;
     right: 0;
@@ -487,8 +505,9 @@ img {
 
 /* Logo dentro del fondo */
 #logomodal img {
-    width: 100%; 
-    opacity: 30%;
+    background: #262626;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    opacity: 100%;
     filter: invert(1);
     object-fit: contain; 
 }
@@ -498,7 +517,7 @@ img {
 #contmodal p {
     position: relative; 
     z-index: 995; 
-    color: var(--w);
+    color: var(--b);
     transition: opacity 0.9s ease-in; 
     transition: opacity 0.1s ease-out; 
 }
@@ -514,3 +533,71 @@ img {
 #openModal:hover {
     color: #9d9d9d;
   }  
+
+
+
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 992px) {
+    #logo {
+        position: absolute;
+        width: 35%;
+    } 
+    #lychg {
+        flex-direction: column;
+        position: fixed;
+        right: 0;
+        align-items: end;
+        margin-right: 1.5rem;
+        top: 50%;
+        row-gap: 3rem;
+        transform: translate(0, -50%);
+    }
+
+    #info-imgs {
+        row-gap: 7rem;
+        width: 75%;
+    }
+    #info-imgs .line {
+        flex-direction: column;
+        row-gap: 7rem;
+    }
+    .uno, .tres {
+        align-self: end;
+    }
+
+    #openModal {
+        background-color: transparent;
+    }
+    #tatuador {
+        position: absolute;
+        z-index: 1;
+        margin-top: 8rem;
+        margin-left: 1rem;
+        height: 70vh;
+        width: 80vw;
+        pointer-events: none;
+    }
+    /* #phototat {
+        display: none; 
+    } */
+    #phototatscroll {
+        width: 100%; 
+        max-height: 100vh; 
+    }
+    #infotat4 {
+        display: block; 
+        position: relative; 
+        margin-bottom: 1rem; 
+    }
+    #logomodal {
+        width: 150%;
+    }
+    .mastercard {
+        pointer-events: all;
+    }
+    
+}
+
+  
