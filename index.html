@@ -12,7 +12,11 @@
     </head>
 
     <body>
-        <div id="menu">
+        <div id="landing">
+            <model-viewer id="myModel" src="media/3d/044logo.gltf" shadow-intensity="0" shadow-softness="0" camera-target="0m 0m -0.07m" exposure="0.3" disable-zoom     camera-orbit="0deg 15deg 5%">
+            </model-viewer>
+        </div>
+        <div id="menu" class="hidden">
             <div id="logo" class="col-2">
                 <img src="media/044logo.svg">
             </div>
@@ -30,7 +34,7 @@
             </div>
         </div>
 
-        <div id="info-imgs">
+        <div id="info-imgs" class="hidden">
             <div class="line col-12">
                 <div class="uno infodivs" id="infotat"></div>
                 <div class="dos infodivs">BY APPOINTMENT ONLY</div>
@@ -43,8 +47,7 @@
             </div>
         </div>
 
-        
-        <div id="layout1" class="row">
+        <div id="layout1" class="hidden row">
             <div class="col hide"></div>
             <div class="col-lg-2 ly1col fast hide"></div>
             <div class="col-lg-2 ly1col mid hide"></div>
@@ -110,7 +113,7 @@
             </div>
             <div>
                 <div>INSTAGRAM</div>
-                <div>@044ATELIER</div>
+                <div id="ig-bt">@044ATELIER</div>
             </div>
             <div>
                 <div>MAIL</div>
@@ -159,11 +162,11 @@
         </div>
 
 
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
         <script src="js/script.js"></script>
     </body>
 </html>

@@ -1,4 +1,54 @@
 $(document).ready(function () {
+
+    // 3D landing
+    function getMouse(e) {
+        return [
+            e.clientX, // Coordenada X del ratón
+            e.clientY  // Coordenada Y del ratón
+        ]
+    }
+
+    let isMouseFollowActive = true;
+
+    function followMouse(e) {
+        if (!isMouseFollowActive) return; 
+    
+        const mouse = getMouse(e);  
+        const modelViewer = document.querySelector("#myModel");
+    
+        const horizontalAngle = -((mouse[0] / window.innerWidth) - 0.5) * 90;  
+        const verticalAngle = ((mouse[1] / window.innerHeight) * 180) - 90;  
+        const clampedVerticalAngle = Math.max(89, Math.min(-89, verticalAngle));  
+        modelViewer.cameraOrbit = `${horizontalAngle}deg ${clampedVerticalAngle}deg 70%`;
+    }
+    
+    document.onmousemove = function(e) {
+        followMouse(e);
+    };
+
+    document.querySelector("#landing").addEventListener("click", function() {
+        const modelViewer = document.querySelector("#myModel");
+    
+        modelViewer.cameraOrbit = "0deg 89deg 70%"; 
+        
+        isMouseFollowActive = false;
+    
+        document.querySelector("#landing").classList.add("hidden");
+        document.querySelector("#menu").style.display = "flex";  
+        document.querySelector("#info-imgs").style.display = "flex";  
+
+        setTimeout(function() {
+            document.querySelector("#landing").style.display = "none";  
+        }, 1000);  
+        setTimeout(function() {
+            document.querySelector("#layout1").classList.remove("hidden");
+            document.querySelector("#menu").classList.remove("hidden");
+            document.querySelector("#info-imgs").classList.remove("hidden");
+        }, 500);  
+    });
+    
+
+
     // arrays tatuadores y array de todo
     const tatuadores = ["acid.ambar", "alex.a.aramburu", "elvirambarbara", "galgocanalla", "infrababy", "nando.diablo_", "nona.tatt", "santagemzz", "zepa.ttt"];
     const rutaBase = "./media/";
@@ -26,7 +76,11 @@ $(document).ready(function () {
     }
     const imagenesRandom = shuffle([...todas]);
 
+    // MENÚ
 
+    $("#ig-bt").on("click", function () {
+        window.open('https://www.instagram.com/044atelier/', '_blank');
+    });
 
     // PARA LAYOUT 1
     if ($(window).width() >= 992) {
@@ -232,22 +286,26 @@ $(document).ready(function () {
 
     $('.tatuador').hover(
         function () {
-            $('#ly3img').css('opacity', '1')
-            $("#layout2").hide();
-            $("#layout2 > div").css({
-                "width": "",
-                "margin-left": "",
-                "margin-right": ""
-            });
-            currentTatuador = $(this).data('tat');
-            const index = indices[currentTatuador];
-            const imagen = `${rutaBase}${currentTatuador}/imagen${index + 1}.jpg`; 
-            $('#ly3img').attr('src', imagen).show();
+            if ($(window).width() > 992) {
+                $('#ly3img').css('opacity', '1')
+                $("#layout2").hide();
+                $("#layout2 > div").css({
+                    "width": "",
+                    "margin-left": "",
+                    "margin-right": ""
+                });
+                currentTatuador = $(this).data('tat');
+                const index = indices[currentTatuador];
+                const imagen = `${rutaBase}${currentTatuador}/imagen${index + 1}.jpg`; 
+                $('#ly3img').attr('src', imagen).show();
+            }
         },
         function () {
-            const index = indices[currentTatuador];
-            indices[currentTatuador] = (index + 1) % numImagenes; 
-            $('#ly3img').hide(); 
+            if ($(window).width() > 992) {
+                const index = indices[currentTatuador];
+                indices[currentTatuador] = (index + 1) % numImagenes; 
+                $('#ly3img').hide(); 
+            }
         }
     );
 
@@ -478,33 +536,59 @@ $(document).ready(function () {
 
     // LAYOUT 2 a LAYOUT 3
     function ly2ToLy3() {
-
-        const infodivs = $(".infodivs").toArray();
-        infodivs.forEach((div, index) => {
-            setTimeout(() => {
-                $(div).animate({ opacity: 0 }, 200);
-            }, index * 200);
-        });
-
-        setTimeout(() => {
-            $("#layout2 > div").css({
-                "width": "20%",
-                "transition": "width 0.8s ease",
-                "margin-left": "auto",
-                "margin-right": "auto",
-            });
-        }, 1200);
-
-        setTimeout(() => {
-            $('#layout3').show();
-            let tatuadores = $(".tatuador").toArray();
-            let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
-            shuffledTats.forEach((div, index) => {
+        if ($(window).width() > 992) {  
+            const infodivs = $(".infodivs").toArray();
+            infodivs.forEach((div, index) => {
                 setTimeout(() => {
-                    $(div).animate({ opacity: 1 }, 200);
+                    $(div).animate({ opacity: 0 }, 200);
                 }, index * 200);
             });
-        }, 2000);
+
+            setTimeout(() => {
+                $("#layout2 > div").css({
+                    "width": "20%",
+                    "transition": "width 0.8s ease",
+                    "margin-left": "auto",
+                    "margin-right": "auto",
+                });
+            }, 1200);
+
+            setTimeout(() => {
+                $('#layout3').show();
+                let tatuadores = $(".tatuador").toArray();
+                let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+                shuffledTats.forEach((div, index) => {
+                    setTimeout(() => {
+                        $(div).animate({ opacity: 1 }, 200);
+                    }, index * 200);
+                });
+            }, 2000);
+        } else {
+            const infodivs = $(".infodivs").toArray();
+            infodivs.forEach((div, index) => {
+                setTimeout(() => {
+                    $(div).animate({ opacity: 0 }, 200);
+                }, index * 200);
+            });
+
+            setTimeout(() => {
+                $("#layout2 > div").css({
+                    "transition": "opacity 0.8s ease",
+                    "opacity": "0",
+                });
+            }, 1200);
+
+            setTimeout(() => {
+                $('#layout3').show();
+                let tatuadores = $(".tatuador").toArray();
+                let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+                shuffledTats.forEach((div, index) => {
+                    setTimeout(() => {
+                        $(div).animate({ opacity: 1 }, 200);
+                    }, index * 200);
+                });
+            }, 2000);
+        }
     }
 
 

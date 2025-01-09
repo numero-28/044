@@ -33,15 +33,42 @@ img {
     width: 100%;
 }
 
+/* LANDING */
+#landing {
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--b);
+    cursor: grabbing;
+    z-index: 100;
+    transition: opacity 1s ease-out; 
+    opacity: 1;
+}
+
+#myModel {
+    width: 100%;
+    height: 100%;
+}
+
+#landing.hidden,
+#menu.hidden,
+#layout1.hidden,
+#info-imgs.hidden {
+    opacity: 0;
+}
+
 /* MENÜ */
 #menu {
-    display: flex;
+    display: none;
     padding: 1rem 1.5rem;
     position: fixed;
     width: 100%;
     pointer-events: none;
     z-index: 50;
     top: 0;
+    transition: opacity 1s ease-in; 
+    opacity: 1;
 }
 #logo img {
     width: 85%;
@@ -85,6 +112,8 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+    opacity: 1;
+    transition: opacity 1s ease-in;
 }
 .infodivs {
     opacity: 0;
@@ -108,6 +137,9 @@ img {
 #layout1 {
     padding-top: 3rem;
     overflow: hidden;
+    display: flex;
+    opacity: 1;
+    transition: opacity 1s ease-in; 
     height: 5700px;
 }
 #layout1 > div {
@@ -129,6 +161,10 @@ img {
 #layout1 .ly1col img {
     filter: brightness(0.7);
     margin: 0;
+    cursor: pointer;
+}
+.ly1col img:last-child {
+    margin-bottom: 0!important;
 }
 .ly1col img:last-child {
     margin-bottom: 0!important;
@@ -515,10 +551,10 @@ img {
         row-gap: 3rem;
         transform: translate(0, -50%);
     }
-
     #info-imgs {
         row-gap: 10vh;
         width: 75%;
+        padding-top: 3rem;
     }
     #info-imgs .line {
         flex-direction: column;
@@ -586,7 +622,72 @@ img {
     .mastercard {
         pointer-events: all;
     }
-    
+    #tatuadores > div:nth-child(5) {
+        top: 59%;
+        right: 23%;
+    }
+    #tatuadores > div:nth-child(6) {
+        top: 47%;
+        left: 8%;
+    }
+    #tatuadores > div:nth-child(7) {
+        top: 70%;
+        right: 59%;
+    }
+    #tatuadores > div:nth-child(9) {
+        right: 77%;
+        bottom: 3%;
+    }
+    #landing {
+        display: none;
+    }
+    #landing.hidden,
+    #menu.hidden,
+    #layout1.hidden,
+    #info-imgs.hidden {
+        opacity: 1;
+    }
+    #menu {
+        display: flex;
+    }
+    #us > div:nth-child(1) {
+        width: 65%;
+        top: 33%;
+    }
+    #us > div:nth-child(2) {
+        top: 16%;
+        width: 82%;
+    }
+    #us > div:nth-child(3) {
+        top: 43%;
+        height: 37%;
+    }
+    #us > div:nth-child(4) {
+        right: 45%;
+    }
+    #us > div:nth-child(5) {
+        width: 45%;
+    }
+    #us-data > div:nth-child(2) {
+        left: 42%;
+    }
+    #us-data > div:nth-child(4) {
+        top: 56%;
+        right: 22%;
+    }
+    #us-data > div:nth-child(5) {
+        top: 84%;
+    }
+    #us-data > div:nth-child(6) {
+        top: 36%;
+    }
+    #us-data > div:nth-child(8) {
+        top: 92%;
+        right: 79%;
+    }
+    #us-data > div:nth-child(9) {
+        top: 65%;
+    }
 }
 
   
