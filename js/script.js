@@ -245,21 +245,26 @@ $(document).ready(function () {
         $('#prev').click(function() {
             currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
             update2ph();
+                do {
+                newOrder.sort(() => Math.random() - 0.5);
+            } while (newOrder.some((div, index) => div === infodivs[index]));
+            
+            newOrder.forEach(div => $(div).parent().append(div));
         });
         $('#next').click(function() {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
             update2ph();
+            do {
+                newOrder.sort(() => Math.random() - 0.5);
+            } while (newOrder.some((div, index) => div === infodivs[index]));
+            
+            newOrder.forEach(div => $(div).parent().append(div));
 
         });
         $('#ly2img').click(function() {
             const imgClicked = $(this).attr('src');
             showLy4(imgClicked);
         });
-        do {
-            newOrder.sort(() => Math.random() - 0.5);
-        } while (newOrder.some((div, index) => div === infodivs[index]));
-        
-        newOrder.forEach(div => $(div).parent().append(div));
 
         function update2ph() {
             const nuevaImagen = imagenesRandom[currentIndex];
