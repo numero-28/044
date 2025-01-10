@@ -497,14 +497,28 @@ $(document).ready(function () {
 
     // LAYOUT 2 a LAYOUT 3
     function ly2ToLy3() {
-        if ($(window).width() > 992) {  
-            const infodivs = $(".infodivs").toArray();
-            infodivs.forEach((div, index) => {
+
+        const infodivs = $(".infodivs").toArray();
+        infodivs.forEach((div, index) => {
+            setTimeout(() => {
+                $(div).animate({ opacity: 0 }, 200);
+            }, index * 200);
+        });
+
+        setTimeout(() => {
+            $('#layout3').show();
+            let tatuadores = $(".tatuador").toArray();
+            let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
+            shuffledTats.forEach((div, index) => {
                 setTimeout(() => {
-                    $(div).animate({ opacity: 0 }, 200);
+                    $(div).animate({ opacity: 1 }, 200);
                 }, index * 200);
             });
+        }, 2000);
 
+
+
+        if ($(window).width() > 992) {  
             setTimeout(() => {
                 $("#layout2 > div").css({
                     "width": "20%",
@@ -514,41 +528,16 @@ $(document).ready(function () {
                 });
             }, 1200);
 
-            setTimeout(() => {
-                $('#layout3').show();
-                let tatuadores = $(".tatuador").toArray();
-                let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
-                shuffledTats.forEach((div, index) => {
-                    setTimeout(() => {
-                        $(div).animate({ opacity: 1 }, 200);
-                    }, index * 200);
-                });
-            }, 2000);
         } else {
-            const infodivs = $(".infodivs").toArray();
-            infodivs.forEach((div, index) => {
-                setTimeout(() => {
-                    $(div).animate({ opacity: 0 }, 200);
-                }, index * 200);
-            });
-
+            setTimeout(() => {
+                $('#layout2').hide();
+            }, 2000);
             setTimeout(() => {
                 $("#layout2 > div").css({
                     "transition": "opacity 0.8s ease",
                     "opacity": "0",
                 });
             }, 1200);
-
-            setTimeout(() => {
-                $('#layout3').show();
-                let tatuadores = $(".tatuador").toArray();
-                let shuffledTats = tatuadores.sort(() => Math.random() - 0.5);
-                shuffledTats.forEach((div, index) => {
-                    setTimeout(() => {
-                        $(div).animate({ opacity: 1 }, 200);
-                    }, index * 200);
-                });
-            }, 2000);
         }
     }
 
