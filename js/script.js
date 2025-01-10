@@ -32,7 +32,8 @@ $(document).ready(function () {
         modelViewer.cameraOrbit = "0deg 89deg 70%"; 
         
         isMouseFollowActive = false;
-    
+        
+        document.querySelector("body").style.overflow = "visible";
         document.querySelector("#landing").classList.add("hidden");
         document.querySelector("#menu").style.display = "flex";  
         document.querySelector("#info-imgs").style.display = "flex";  
@@ -245,21 +246,26 @@ $(document).ready(function () {
         $('#prev').click(function() {
             currentIndex = (currentIndex - 1 + imagenesRandom.length) % imagenesRandom.length;
             update2ph();
+                do {
+                newOrder.sort(() => Math.random() - 0.5);
+            } while (newOrder.some((div, index) => div === infodivs[index]));
+            
+            newOrder.forEach(div => $(div).parent().append(div));
         });
         $('#next').click(function() {
             currentIndex = (currentIndex + 1) % imagenesRandom.length;
             update2ph();
+            do {
+                newOrder.sort(() => Math.random() - 0.5);
+            } while (newOrder.some((div, index) => div === infodivs[index]));
+            
+            newOrder.forEach(div => $(div).parent().append(div));
 
         });
         $('#ly2img').click(function() {
             const imgClicked = $(this).attr('src');
             showLy4(imgClicked);
         });
-        do {
-            newOrder.sort(() => Math.random() - 0.5);
-        } while (newOrder.some((div, index) => div === infodivs[index]));
-        
-        newOrder.forEach(div => $(div).parent().append(div));
 
         function update2ph() {
             const nuevaImagen = imagenesRandom[currentIndex];
@@ -457,7 +463,7 @@ $(document).ready(function () {
                 });
                 $("#layout1").hide();
                 $('#info-imgs').css('opacity', '1');
-                $('body').css('overflow', '');
+                $('body').css('overflow', 'visible');
             }, 500);
         }, 2900);
 
@@ -764,7 +770,7 @@ $(document).ready(function () {
 
         setTimeout(() => {
             $('#us').hide(); 
-            $('body').css('overflow', '');
+            $('body').css('overflow', 'visible');
         }, 800);
     }
     
