@@ -84,7 +84,7 @@ img {
     cursor: pointer;
     height: fit-content;
 }
-#menu span, #menu div {
+#menu span, #menu div, #life-bt a {
     font-family: var(--helve-bd);
     color: var(--w);
 }
@@ -95,6 +95,9 @@ img {
 #us-bt {
     text-align: end;
     width: 50%;
+}
+#life-bt a {
+    text-decoration: none;
 }
 #prevnext{
     display: none;
