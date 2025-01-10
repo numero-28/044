@@ -28,6 +28,7 @@
 }
 body {
     background-color: var(--b);
+    overflow: hidden ;
 }
 img {
     width: 100%;
@@ -84,7 +85,7 @@ img {
     cursor: pointer;
     height: fit-content;
 }
-#menu span, #menu div {
+#menu span, #menu div, #life-bt a {
     font-family: var(--helve-bd);
     color: var(--w);
 }
@@ -95,6 +96,9 @@ img {
 #us-bt {
     text-align: end;
     width: 50%;
+}
+#life-bt a {
+    text-decoration: none;
 }
 #prevnext{
     display: none;
@@ -325,6 +329,7 @@ img {
     display: flex;
     justify-content: space-between;
     width: 80%;
+    column-gap: 1rem;
 }
 #us > div:nth-child(3) {
     top: 40%;
@@ -348,12 +353,13 @@ img {
     display: flex;
     justify-content: space-between;
     width: 50%;
+    column-gap: 1rem;
 }
 
 
 
 #us-data > div:first-child {
-    right: 80%;
+    left: 2%;
 }
 #us-data > div:nth-child(2) {
     top: 25%;
@@ -690,7 +696,7 @@ img {
     }
     #us-data > div:nth-child(8) {
         top: 92%;
-        right: 79%;
+        left: 4%;
     }
     #us-data > div:nth-child(9) {
         top: 65%;
