@@ -572,7 +572,6 @@ img {
     .uno, .tres {
         align-self: end;
     }
-
     #prevnext{
         display: flex;
         width: 44%;
@@ -588,11 +587,12 @@ img {
         font-family: var(--helve-bd);
         color: var(--w);
     }
-
     #ly2img {
         margin-right: 0;
     }
-
+    #layout3 {
+        overflow: hidden;
+    }
     #ttimg {
         display: none;
     }
@@ -685,10 +685,10 @@ img {
     }
     #us > div:nth-child(5) {
         width: 50%;
-        top: 84%;
+        top: 85%;
     }
     #us > div:nth-child(6) {
-        top: 86%;
+        top: 87%;
     }
     #us-data > div:first-child {
         right: 68%;
