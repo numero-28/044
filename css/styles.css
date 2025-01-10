@@ -659,21 +659,30 @@ img {
     }
     #us > div:nth-child(1) {
         width: 65%;
-        top: 33%;
+        top: 34%;
     }
     #us > div:nth-child(2) {
         top: 16%;
         width: 82%;
+        right: -9%;
     }
     #us > div:nth-child(3) {
         top: 43%;
-        height: 37%;
+        height: 30%;
     }
     #us > div:nth-child(4) {
         right: 45%;
+        top: 80%;
     }
     #us > div:nth-child(5) {
-        width: 45%;
+        width: 50%;
+        top: 84%;
+    }
+    #us > div:nth-child(6) {
+        top: 86%;
+    }
+    #us-data > div:first-child {
+        right: 68%;
     }
     #us-data > div:nth-child(2) {
         left: 42%;
@@ -690,7 +699,7 @@ img {
     }
     #us-data > div:nth-child(8) {
         top: 92%;
-        right: 79%;
+        right: 47%;
     }
     #us-data > div:nth-child(9) {
         top: 65%;
