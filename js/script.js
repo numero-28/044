@@ -462,7 +462,7 @@ $(document).ready(function () {
                 });
                 $("#layout1").hide();
                 $('#info-imgs').css('opacity', '1');
-                $('body').css('overflow', '');
+                $('body').css('overflow', 'visible');
             }, 500);
         }, 2900);
 
@@ -769,7 +769,7 @@ $(document).ready(function () {
 
         setTimeout(() => {
             $('#us').hide(); 
-            $('body').css('overflow', '');
+            $('body').css('overflow', 'visible');
         }, 800);
     }
     
