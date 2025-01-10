@@ -17,7 +17,7 @@ $(document).ready(function () {
         const modelViewer = document.querySelector("#myModel");
     
         const horizontalAngle = -((mouse[0] / window.innerWidth) - 0.5) * 90;  
-        const verticalAngle = ((mouse[1] / window.innerHeight) * 180) - 90;  
+        const verticalAngle = ((mouse[1] / window.innerHeight) * 120) - 90;  
         const clampedVerticalAngle = Math.max(89, Math.min(-89, verticalAngle));  
         modelViewer.cameraOrbit = `${horizontalAngle}deg ${clampedVerticalAngle}deg 70%`;
     }
@@ -584,8 +584,6 @@ $(document).ready(function () {
             });
         }, 2000);
 
-
-
         if ($(window).width() > 992) {  
             setTimeout(() => {
                 $("#layout2 > div").css({
@@ -595,7 +593,6 @@ $(document).ready(function () {
                     "margin-right": "auto",
                 });
             }, 1200);
-
         } else {
             setTimeout(() => {
                 $('#layout2').hide();
