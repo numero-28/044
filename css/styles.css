@@ -580,6 +580,13 @@ img {
         color: var(--w);
     }
 
+    #ly2img {
+        margin-right: 0;
+    }
+
+    #ttimg {
+        display: none;
+    }
     #contmodal {
         width: 45%;
     }

@@ -425,6 +425,8 @@ $(document).ready(function () {
                         transition: "transform 0.8s ease",
                         transform: `translate(${translateX}px, ${translateY}px) scale(${scaleFactorPh})` 
                     });
+                    console.log(scaleFactorPh);
+                    
                 }
             }, 600); 
         }, 1400);
@@ -484,13 +486,34 @@ $(document).ready(function () {
             let viewportWidth = $(window).width();
             let margin = 1.3 * parseFloat(getComputedStyle(document.documentElement).fontSize);
             let squareWidth = (viewportWidth / 6) - (2 * margin);
-            $("#ly2img").css({
-                "width": squareWidth + "px",
-                "transition": "width 0.8s ease",
-                "margin-left": "auto",
-                "margin-right": "auto",
-                "display": "block"
-            });
+            let squareWidthPh = (viewportWidth / 2) - - (2 * margin);
+
+            if ($(window).width() > 992) {  
+                $("#ly2img").css({
+                    "width": squareWidth + "px",
+                    "transition": "width 0.8s ease",
+                    "margin-left": "auto",
+                    "margin-right": "auto",
+                    "display": "block"
+                });
+            } else {
+                $("#ly2img").css({
+                    "height": squareWidthPh + "px",
+                    "transition": "height 0.8s ease, transform .8s ease",
+                    "margin-left": "auto",
+                    "margin-right": "auto",
+                    "display": "block",
+                    "transform": "translateX(0)"
+                });
+                setTimeout(() => {
+                    const element = $('#ly2img');
+                    const elementOffset = element.offset().left; 
+                    const distanceToMove = -elementOffset + margin;
+                    $("#ly2img").css({
+                        "transform": `translateX(${distanceToMove}px)`
+                    });
+                },800);
+            }
         }, 1200);
 
         setTimeout(() => {
@@ -519,7 +542,7 @@ $(document).ready(function () {
                     $(group).animate({ opacity: 1 }, 200);
                 }, index * 200);
             });
-        }, 2000);
+        }, 3000);
 
         setTimeout(() => {
             $("#layout2").hide();
@@ -527,9 +550,10 @@ $(document).ready(function () {
                 "width": "",
                 "margin-left": "",
                 "margin-right": "",
-                "display": ""
+                "display": "",
+                "transform": "translateX(0)"
             });
-        }, 3500);
+        }, 4500);
     }
 
 
@@ -600,6 +624,15 @@ $(document).ready(function () {
             $('#ly2img').attr('src', imagenesRandom[currentIndex]);
             $('#ly2img').attr('data-tat', imagenesRandom[currentIndex].split('/')[2]);
             $('#infotat').text(imagenesRandom[currentIndex].split('/')[2]);
+        }
+
+        let viewportWidth = $(window).width();
+        let viewportHeight = $(window).height();
+        if (viewportHeight>viewportWidth) {
+            $('#ly2img').css({
+                "height": "100%",
+                "width": "auto"
+            })
         }
 
         $('#layout2 > div').css('opacity', '0');
@@ -752,26 +785,9 @@ $(document).ready(function () {
 
 
     // LAYOUT 4 
-    $('#layout1 img').click(function() {
-        const imgClicked = $(this).attr('src');
-        showLy4(imgClicked);
-    });
 
     function showLy4(imgClicked) {
-        $('#layout4').css({ opacity: 1, 'pointer-events': 'all' }); 
-        $('#ly1, #ly2, #ly3, #life-bt, #us-bt').hide();
-        $('#close').show();
-
-        if ($(window).width() <= 992) {
-        $('#lychg').css({
-                "flex-direction": "row",
-                "top": "auto",
-                "transform": "translate(-50%, -50%)",
-                "left": "50%",
-                "padding-top": "1.5rem"
-
-            });
-        }
+        ly3mutuals();
         
         const subc = imgClicked.split('/')[2]; 
         
@@ -807,20 +823,75 @@ $(document).ready(function () {
                 const imagenPath = `./${tatuadorSeleccionado.baseImagePath}imagen${i}.jpg`;
                 console.log(imagenPath);
                 console.log(imgClicked);
-                if (imagenPath !== imgClicked) { // Filtrar imgClicked
+                if (imagenPath !== imgClicked) { 
                     phototatscroll.append(`<img src="${imagenPath}" alt="Photo ${i}">`);
                 }
             }
-    
 
             initializePhotoScroll();
         }
     }
 
-    $('#layout3 .tatuador').click(function () {
-        const imgClicked = $('#ly3img').attr('src'); 
-        showLy4(imgClicked); 
+
+    $('#layout1 img').click(function() {
+        const imgClicked = $(this).attr('src');
+        showLy4(imgClicked);
     });
+
+
+    $('#layout3 .tatuador').click(function () {
+        ly3mutuals();
+        if ($(window).width() <= 992) {
+            const dataTat = $(this).data('tat');
+            const images = tatuadorImagenes[dataTat] || [];
+            
+            if (images.length > 0) {
+                $('#fotoPrincipal').attr('src', images[0]); 
+            }
+
+            const phototatscroll = $('#phototatscroll');
+            phototatscroll.empty();
+            images.forEach(image => {
+                phototatscroll.append(`<img src="${image}" alt="${dataTat} image">`);
+            });
+
+            const tatuadorSeleccionado = infoTat.find(t => t.baseImagePath.includes(dataTat));
+            if (tatuadorSeleccionado) {
+                $('#tatuador .tatname').text(tatuadorSeleccionado.name);
+                $('#tatuador .cities').html(tatuadorSeleccionado.cities);
+                $('#tatuador .tatstyle').text(tatuadorSeleccionado.style);
+                $('#openModal').text(`CONTACT WITH ${tatuadorSeleccionado.name.toUpperCase()}`);
+
+                $('#contmodal h2').text(tatuadorSeleccionado.handle);
+                $('#contmodal p').eq(0).text(tatuadorSeleccionado.email);
+                $('#contmodal p').eq(1).text(tatuadorSeleccionado.phone);
+                $('#logomodal img').attr('src', tatuadorSeleccionado.logo);
+            }
+
+            initializePhotoScroll(); 
+        } else {
+            const imgClicked = $('#ly3img').attr('src'); 
+            showLy4(imgClicked); 
+        }
+    });
+
+
+    function ly3mutuals() {
+        $('#layout4').css({ opacity: 1, 'pointer-events': 'all' });
+        $('#ly1, #ly2, #ly3, #life-bt, #us-bt').hide();
+        $('#close').show();
+
+        if ($(window).width() <= 992) {
+            $('#lychg').css({
+                "flex-direction": "row",
+                "top": "auto",
+                "transform": "translate(-50%, -50%)",
+                "left": "50%",
+                "padding-top": "1.5rem"
+            });
+        }
+    }
+
 
     $('#close').click(function() {
         $('#layout4').css('opacity', '0');
