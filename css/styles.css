@@ -28,6 +28,7 @@
 }
 body {
     background-color: var(--b);
+    overflow: hidden ;
 }
 img {
     width: 100%;

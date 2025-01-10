@@ -32,7 +32,8 @@ $(document).ready(function () {
         modelViewer.cameraOrbit = "0deg 89deg 70%"; 
         
         isMouseFollowActive = false;
-    
+        
+        document.querySelector("body").style.overflow = "visible";
         document.querySelector("#landing").classList.add("hidden");
         document.querySelector("#menu").style.display = "flex";  
         document.querySelector("#info-imgs").style.display = "flex";  
